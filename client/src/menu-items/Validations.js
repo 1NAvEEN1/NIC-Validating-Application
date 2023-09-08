@@ -8,20 +8,28 @@ const icons = {
 
 // ==============================|| MENU ITEMS - DASHBOARD ||============================== //
 
-const dashboard = {
-  id: 'group-dashboard',
+const validations = {
+  id: 'Validations',
   title: '',
   type: 'group',
   children: [
     {
-      id: 'dashboard',
-      title: 'Dashboard',
+      id: 'nic',
+      title: 'NIC Validation',
       type: 'item',
-      url: '/dashboard',
+      url: '/NICValidation',
+      icon: icons.DashboardOutlined,
+      breadcrumbs: false
+    },
+    {
+      id: 'Tele',
+      title: 'Telephone No. Validation',
+      type: 'item',
+      url: '/TeleNoValidation',
       icon: icons.DashboardOutlined,
       breadcrumbs: false
     }
   ]
 };
 
-export default dashboard;
+export default validations;

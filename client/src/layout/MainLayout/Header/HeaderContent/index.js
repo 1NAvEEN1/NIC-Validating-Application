@@ -6,7 +6,7 @@ import { Box, Button } from '@mui/material';
 
 const HeaderContent = () => {
   return (
-    <Box sx={{ width: '100%', ml: 1, display: 'flex', color: 'white' }}>
+    <Box sx={{ width: '100%', ml: 1, display: 'flex', color: 'black', BoxShadow: '5px 10px' }}>
       <Box
         sx={{
           width: '100%',
@@ -16,14 +16,13 @@ const HeaderContent = () => {
           alignItems: 'center',
           margin: '-0.5rem 0',
           padding: '0 2rem',
-          color: '#bae7ff'
         }}
       >
-        <h2>Examination Department</h2>
+        <h2>NIC Validation Application</h2>
       </Box>
-      <Box sx={{ width: '100%', ml: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', color: '#bae7ff' }}>
+      <Box sx={{ width: '100%', ml: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', color: 'black' }}>
         <span style={{ margin: '8px' }}>User_001</span>
-        <Button variant="contained" size="medium" sx={{ bgcolor: '#002766', color: '#bae7ff' }}>
+        <Button variant="contained" size="medium" sx={{ bgcolor: '#EBEBEB', color: 'black' }}>
           Logout
         </Button>
       </Box>

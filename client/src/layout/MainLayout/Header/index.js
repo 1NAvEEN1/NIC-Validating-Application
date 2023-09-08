@@ -19,13 +19,13 @@ const Header = ({ open, handleDrawerToggle }) => {
 
   // common header
   const mainHeader = (
-    <Toolbar sx={{ backgroundColor: '#003a8c' }}>
+    <Toolbar sx={{ backgroundColor: '#fff' }}>
       <IconButton
         disableRipple
         aria-label="open drawer"
         onClick={handleDrawerToggle}
         edge="start"
-        sx={{ color: 'white', bgcolor: '#002766', ml: { xs: 0, lg: -2 } }}
+        sx={{ color: 'grey', bgcolor: '#EBEBEB', ml: { xs: 0, lg: -2 } }}
       >
         {!open ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
       </IconButton>

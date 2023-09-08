@@ -1,13 +1,11 @@
 // project import
-import dashboard from './dashboard';
-import examRegistrations from './examRegistrations';
-import entrance from './entrance';
-import reports from './reports';
+import validations from './Validations';
+import userActivities from './UserActivities';
 
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-  items: [dashboard, examRegistrations, entrance, reports]
+  items: [validations, userActivities]
 };
 
 export default menuItems;

@@ -9,8 +9,7 @@ const DrawerHeader = () => {
   return (
     // only available in paid version
     <Stack direction="row" spacing={1} alignItems="center" m="0.5rem 0 1rem 0.3rem">
-      <img src={logo} alt="Logo" style={{ width: '25%' }} />
-      <h4 style={{ color: '#002766' }}>SRI LANKA LAW COLLEGE</h4>
+      <img src={logo} alt="Logo" style={{ width: '95%' }} />
     </Stack>
   );
 };
