@@ -1,0 +1,23 @@
+#reset-this-root {
+  all: unset;
+}
+
+.align-center {
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.align-right {
+  display: flex !important;
+  justify-content: right !important;
+}
+
+.bottom {
+  position:fixed;
+  display: flex !important;
+  bottom:2%;
+  padding-left: 2rem;
+  color: #002766;
+}
+
+@import '~react-toastify/dist/ReactToastify.css';

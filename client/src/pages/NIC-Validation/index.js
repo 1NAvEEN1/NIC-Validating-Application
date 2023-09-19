@@ -151,6 +151,7 @@ const DashboardDefault = () => {
               <TextField
                 type="tel"
                 onChange={validation}
+                onInput={sanitizeInput}
                 inputProps={{ maxLength: 12 }}
                 error={error}
                 helperText={errorMsg}

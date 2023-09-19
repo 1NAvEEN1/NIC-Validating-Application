@@ -8,8 +8,8 @@ app.use(cors());
 const db = require("./models");
 
 //Routers
-const user = require("./routes/Users");
-app.use("/user", user);
+const Users = require("./routes/Users");
+app.use("/Users", Users);
 
 const Mobi_Validations = require("./routes/Mobi_Validations");
 app.use("/Mobi_Validations", Mobi_Validations);
