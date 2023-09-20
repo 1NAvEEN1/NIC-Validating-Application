@@ -1,10 +1,6 @@
 import React from "react";
-import {
-  Box,
-  Grid,
-  Button,
-  Container,
-} from "@mui/material";
+import Icon from "../../assets/UserIcon.png";
+import { Box, Grid, Button, Container } from "@mui/material";
 import logo from "../../assets/logo.png";
 
 const Header = () => {
@@ -17,7 +13,7 @@ const Header = () => {
           justifyContent="space-between"
           py={2}
         >
-          <Grid item xs={3} md={1.5} >
+          <Grid item xs={3} md={1.5}>
             <img src={logo} alt="Logo" style={{ maxWidth: "100%" }} />
           </Grid>
           <Grid
@@ -29,10 +25,28 @@ const Header = () => {
             spacing={1}
           >
             <Grid item>
-              <Button>O</Button>
+              <Button
+                color="error"
+                sx={{
+                  borderRadius: "100%",
+                }}
+              >
+                <img src={Icon} alt="Icon" style={{ maxWidth: "2rem" }} />
+              </Button>
             </Grid>
             <Grid item>
-              <Button variant="contained" color="error" sx={{borderRadius: "2rem", color:"#211D21", fontWeight: 'bold'}}>Logout</Button>
+              <Button
+                variant="contained"
+                color="error"
+                sx={{
+                  borderRadius: "2rem",
+                  color: "#211D21",
+                  fontWeight: "bold",
+                  backgroundColor: "red",
+                }}
+              >
+                Logout
+              </Button>
             </Grid>
           </Grid>
         </Grid>

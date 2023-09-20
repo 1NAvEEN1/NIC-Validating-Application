@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { Users } = require("../models");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 router.get("/", (req, res) => {
   res.send("Hello");
@@ -42,18 +43,27 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.post("/login" , async (req, res) => {
-  const { UserName, Password} = req.body;
+router.post("/login", async (req, res) => {
+  try {
+    const { UserName, Password } = req.body;
 
-  const user = await Users.findOne({where: { UserName : UserName}});
-  if (!user) res.json ({error: "User Doesn't Exist"})
+    const user = await Users.findOne({ where: { UserName } });
+    if (!user) {
+      return res.status(400).json({ error: "User Doesn't Exist" });
+    }
 
-  bcrypt.compare(Password, user.Password).then((match) => {
-    if (!match) res.json({error: "Wrong Credentials"});
-
-    res.json("Logged in")
-  })
-})
+    const isPasswordValid = await bcrypt.compare(Password, user.Password);
+    if (!isPasswordValid) {
+      return res.status(400).json({ error: "Wrong Credentials" });
+    } else {
+      const jwToken = jwt.sign({ UserName: user.UserName }, "important");
+      return res.status(200).json(jwToken);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 // router.post("/", async (req, res) => {
 //   const {username, password} = req.body;
