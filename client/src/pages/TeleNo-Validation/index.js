@@ -28,18 +28,17 @@ const TeleNoValidation = () => {
         setServiceProvider('Dialog');
       } else if (sp == '5') {
         setServiceProvider('Hutch');
-      } else if (sp == '9'){
+      } else if (sp == '9') {
         setServiceProvider('');
         setError(true);
         setErrorMsg('Invalid Mobile Number');
       }
     }
-    
   };
 
   const handleSubmit = () => {
     // Handle form submission with the phone state
-    console.log('Submitted phone number:', phone);
+    console.log('Submitted phone number:', phone, serviceProvider);
     if (error == false) {
       axios
         .post('http://localhost:3001/Mobi_Validations', {
@@ -79,6 +78,7 @@ const TeleNoValidation = () => {
               Clear
             </Button>
           </div>
+          <h3>Service Provider : {serviceProvider}</h3>
         </MainCard>
       </Box>
     </div>

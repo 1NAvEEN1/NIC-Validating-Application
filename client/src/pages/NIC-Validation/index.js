@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import MainCard from 'components/MainCard';
-import { TextField, Box, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { TextField, Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, Grid } from '@mui/material';
 import axios from 'axios';
 
 const DashboardDefault = () => {
@@ -27,7 +27,7 @@ const DashboardDefault = () => {
     } else if (value.length < 12) {
       setError(true);
       setErrorMsg('Invalid NIC number!');
-    } else if (Number(value.substring(0, 4)) < 1900 || Number(value.substring(0, 4)) > year) {
+    } else if (Number(value.substring(0, 4)) < 1900 || Number(value.substring(0, 4)) > year - 16) {
       setError(true);
       setErrorMsg('Invalid NIC number! Age');
     } else {
@@ -55,7 +55,7 @@ const DashboardDefault = () => {
       genderDigit = parseInt(nic.charAt(4));
     } else if (type == 'old') {
       birthYear = `19${nic.substring(0, 2)}`;
-      days = parseInt(nic.substring(2, 5));
+      days = parseInt(nic.substring(2, 5)) - 1;
       genderDigit = parseInt(nic.charAt(2));
     }
 
@@ -131,50 +131,57 @@ const DashboardDefault = () => {
     <div>
       <Box sx={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
         <MainCard>
-          <h3>Enter the NIC Number</h3>
-
-          {NICType == 'new' ? (
-            <div>
-              <TextField
-                type="tel"
-                onChange={validation}
-                onInput={sanitizeInput}
-                inputProps={{ maxLength: 12 }}
-                error={error}
-                helperText={errorMsg}
-                value={NICNumber}
-                sx={{ width: '9.2rem' }}
-              />
-            </div>
-          ) : (
-            <div>
-              <TextField
-                type="tel"
-                onChange={validation}
-                onInput={sanitizeInput}
-                inputProps={{ maxLength: 12 }}
-                error={error}
-                helperText={errorMsg}
-                value={NICNumber}
-                sx={{ width: '7rem' }}
-              />
-              <TextField
-                onChange={NICLetter}
-                inputProps={{ maxLength: 1 }} // Limit to a single character
-                type="text"
-                sx={{ width: '2.2rem' }}
-                label={letter}
-              />
-            </div>
-          )}
-          <div>
-            <Button onClick={handleSubmit} variant="contained" color="primary">
-              Submit
-            </Button>
-            <Button onClick={handleClear} variant="outlined" color="secondary">
-              Clear
-            </Button>
-          </div>
+          <Grid container spacing={2} direction="column" alignItems="center" justify="center">
+            <Grid item xs={12}>
+              <h3>Enter the NIC Number</h3>
+            </Grid>
+            <Grid item xs={8}>
+              {NICType == 'new' ? (
+                <div>
+                  <TextField
+                    type="tel"
+                    onChange={validation}
+                    onInput={sanitizeInput}
+                    inputProps={{ maxLength: 12 }}
+                    error={error}
+                    helperText={errorMsg}
+                    value={NICNumber}
+                    sx={{ width: '9.2rem' }}
+                  />
+                </div>
+              ) : (
+                <div>
+                  <TextField
+                    type="tel"
+                    onChange={validation}
+                    onInput={sanitizeInput}
+                    inputProps={{ maxLength: 12 }}
+                    error={error}
+                    helperText={errorMsg}
+                    value={NICNumber}
+                    sx={{ width: '7rem' }}
+                  />
+                  <TextField
+                    onChange={NICLetter}
+                    inputProps={{ maxLength: 1 }} // Limit to a single character
+                    type="text"
+                    sx={{ width: '2.2rem' }}
+                    label={letter}
+                  />
+                </div>
+              )}
+            </Grid>
+            <Grid item xs={4}>
+              <Button onClick={handleSubmit} variant="contained" color="primary">
+                Submit
+              </Button>
+            </Grid>
+            <Grid item xs={4}>
+              <Button onClick={handleClear} variant="outlined" color="secondary">
+                Clear
+              </Button>
+            </Grid>
+          </Grid>
         </MainCard>
       </Box>
 
