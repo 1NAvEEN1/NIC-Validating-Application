@@ -37,7 +37,7 @@ function Home() {
         }}
       >
         <h1 style={{ marginBottom: "5rem" }}>Wellcome!</h1>
-        <Grid container spacing={4}>
+        <Grid container spacing={5}>
           <Grid item xs={12} md={4}>
             <Container
               onClick={clickRecords}

@@ -49,6 +49,7 @@ const SignupForm = () => {
     let sp = number.charAt(2);
     setErrorMobile(true);
     setErrorMsg("Invalid Mobile Number");
+    setServiceProvider("");
     if (number.length == 10) {
       setErrorMobile(false);
       setErrorMsg("");
@@ -149,17 +150,6 @@ const SignupForm = () => {
         .catch((error) => {
           console.error(error);
         });
-
-      console.log("Username:", username);
-      console.log("Password:", password);
-      console.log("Full Name:", fullName);
-      console.log("Address:", address);
-      console.log("NIC Number:", nicToSubmit);
-      console.log("Date of Birth:", dateOfBirth);
-      console.log("Age:", age);
-      console.log("Gender:", gender);
-      console.log("Mobile Number:", phone);
-      console.log("Service Provider:", serviceProvider);
       navigate("../login");
     }
   };
@@ -168,6 +158,9 @@ const SignupForm = () => {
     const value = event.target.value;
     setError(false);
     setnicNum(value);
+    setDateOfBirth("");
+    setGender("");
+    setAge("");
     if (value === "") {
       setError(true);
       setnicNumError("Enter a NIC number!");
@@ -331,6 +324,7 @@ const SignupForm = () => {
                       variant="standard"
                       type="tel"
                       color="error"
+                      autoComplete="off"
                       onChange={validation}
                       onInput={sanitizeInput}
                       inputProps={{ maxLength: 12 }}
@@ -348,6 +342,7 @@ const SignupForm = () => {
                       label="NIC Number"
                       type="tel"
                       variant="standard"
+                      autoComplete="off"
                       onChange={validation}
                       onInput={sanitizeInput}
                       inputProps={{ maxLength: 12 }}
