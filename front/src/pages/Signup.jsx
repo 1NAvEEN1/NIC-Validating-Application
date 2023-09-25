@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import InputMask from "react-input-mask";
+import axios from "axios";
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -122,11 +123,38 @@ const SignupForm = () => {
 
     // If all fields are valid, proceed with sign-up
     if (isValid) {
+
+      let nicToSubmit;
+      if (NICType === "old") {
+        nicToSubmit = nicNum + letter;
+      } else if (NICType === "new") {
+        nicToSubmit = nicNum;
+      }
+      axios
+        .post("http://localhost:3001/Users", {
+          UserName: username,
+          Password: password,
+          Name: fullName,
+          NIC: nicToSubmit,
+          DOB:dateOfBirth,
+          Age: age,
+          Gender: gender,
+          Address: address,
+          MobileNo: phone,
+          ServiceProvider: serviceProvider 
+        })
+        .then(() => {
+          console.log("New validation record created");
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
       console.log("Username:", username);
       console.log("Password:", password);
       console.log("Full Name:", fullName);
       console.log("Address:", address);
-      console.log("NIC Number:", nicNum);
+      console.log("NIC Number:", nicToSubmit);
       console.log("Date of Birth:", dateOfBirth);
       console.log("Age:", age);
       console.log("Gender:", gender);

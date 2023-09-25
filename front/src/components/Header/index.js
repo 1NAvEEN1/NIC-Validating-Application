@@ -5,7 +5,7 @@ import logo from "../../assets/logo.png";
 
 const Header = () => {
   return (
-    <Box sx={{ backgroundColor: "#fff" }}>
+    <Box sx={{marginBottom:"5rem"}}>
       <Container>
         <Grid
           container
