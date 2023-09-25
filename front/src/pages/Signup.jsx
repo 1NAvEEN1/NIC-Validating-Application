@@ -385,6 +385,7 @@ const SignupForm = () => {
                       label="Mobile Number"
                       name="phone"
                       type="text"
+                      autoComplete="off"
                       error={errorMobile}
                       helperText={errorMsg}
                       {...inputProps}

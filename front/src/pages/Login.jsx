@@ -1,14 +1,15 @@
-import React from "react";
-import { Container, TextField, Button, Typography, Link } from "@mui/material";
+import React, { useState } from "react";
+import { Container, TextField, Button, Typography, Link, Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
-// import { useSignIn } from "react-auth-kit";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  // const signIn = useSignIn;
+
+  // State to manage login errors
+  const [loginError, setLoginError] = useState(null);
 
   // Define the validation schema using Yup
   const validationSchema = yup.object({
@@ -27,27 +28,17 @@ const LoginForm = () => {
       axios
         .post("http://localhost:3001/Users/login", data)
         .then((response) => {
-          console.log(response.data);
           if (response.status === 200) {
             navigate("/");
-            // if (
-            //   signIn({
-            //     token: response.data,
-            //     expiresIn: 3600,
-            //     tokenType: "Bearer",
-            //     authState: { UserName: data.UserName },
-            //   })
-            // ) {
-            //   // Only if you are using refreshToken feature
-            //   navigate("/");
-            // } else {
-            //   console.log("hi");
-            // }
-          } // Close the if block here
+          } else {
+            // Handle login error and set the error message
+            setLoginError(response.data.error);
+          }
         })
         .catch((error) => {
           console.error(error);
-          // Handle login error and display an error message to the user
+          // Handle network errors or other issues
+          setLoginError("Username and Password doesn't match");
         });
     },
   });
@@ -74,6 +65,11 @@ const LoginForm = () => {
             >
               Login
             </Typography>
+            {loginError && (
+              <Alert severity="error" sx={{ marginBottom: "16px" }}>
+                {loginError}
+              </Alert>
+            )}
             <TextField
               label="Username"
               variant="standard"

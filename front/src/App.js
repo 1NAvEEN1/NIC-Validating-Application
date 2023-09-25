@@ -10,6 +10,10 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NICValidation from "./pages/NICValidation";
+import Analytics from "./pages/Analyze";
+import Validation from "./pages/UserProfile";
+import User from "./pages/User";
+import Records from "./pages/Records";
 // import { RequireAuth } from "react-auth-kit";
 
 function App() {
@@ -27,6 +31,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route path="/" element={<Home />} exact />
+            <Route path="/Records" element={<Records />} exact />
+            <Route path="/Analytics" element={<Analytics />} exact />
+            <Route path="/Validation" element={<Validation />} exact />
+            <Route path="/User" element={<User />} exact />
             <Route path="/NICValidation" element={<NICValidation />} exact />
           </Route>
           <Route path="/login" element={<Login />} exact />

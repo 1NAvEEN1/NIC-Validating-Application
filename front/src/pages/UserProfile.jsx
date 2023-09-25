@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 
 
-function Records() {
+function UserProfile() {
 
   return (
     <div>
@@ -22,11 +22,11 @@ function Records() {
           width: "100%",
         }}
       >
-        <h1 style={{marginBottom:"5rem"}}>Records</h1>
+        <h1 style={{marginBottom:"5rem"}}>User Profile</h1>
         
       </Container>
     </div>
   );
 }
 
-export default Records;
+export default UserProfile;
