@@ -60,7 +60,7 @@ const SignupForm = () => {
       } else if (sp == "3" || sp == "4" || sp == "6" || sp == "7") {
         setServiceProvider("Dialog");
       } else if (sp == "5") {
-        setServiceProvider("Hutch");
+        setServiceProvider("Airtel");
       } else if (sp == "9") {
         setServiceProvider("");
         setErrorMobile(true);
