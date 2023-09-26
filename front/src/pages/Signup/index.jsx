@@ -124,7 +124,6 @@ const SignupForm = () => {
 
     // If all fields are valid, proceed with sign-up
     if (isValid) {
-
       let nicToSubmit;
       if (NICType === "old") {
         nicToSubmit = nicNum + letter;
@@ -137,12 +136,12 @@ const SignupForm = () => {
           Password: password,
           Name: fullName,
           NIC: nicToSubmit,
-          DOB:dateOfBirth,
+          DOB: dateOfBirth,
           Age: age,
           Gender: gender,
           Address: address,
           MobileNo: phone,
-          ServiceProvider: serviceProvider 
+          ServiceProvider: serviceProvider,
         })
         .then(() => {
           console.log("New validation record created");
@@ -202,10 +201,17 @@ const SignupForm = () => {
       genderDigit = parseInt(nic.charAt(2));
     }
 
-    const birthDate = new Date(birthYear, 0); // Initialize with the birth year
-    birthDate.setDate(birthDate.getDate() + days); // Add days
-
     const gender = genderDigit < 5 ? "Male" : "Female";
+    // Initialize with the birth year
+    const birthDate = new Date(birthYear, 0);
+    if (gender == "Female") {
+      birthDate.setDate(birthDate.getDate() + days - 500);
+      console.log("hi");
+    } else if (gender == "Male") {
+      birthDate.setDate(birthDate.getDate() + days);
+      console.log("h");
+    }
+
     const dob = birthDate.toISOString().split("T")[0];
 
     const age = year - Number(birthYear);
