@@ -1,13 +1,16 @@
 import React from "react";
-import Icon from "../../assets/UserIcon.png";
 import { Box, Grid, Button, Container } from "@mui/material";
 import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
+import { useSignOut } from "react-auth-kit";
+
 
 const Header = () => {
   const navigate = useNavigate();
+  const signOut = useSignOut();
 
   const logout = () => {
+    signOut();
     navigate("../login");
   };
 

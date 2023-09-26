@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 
 
-function UserProfile() {
+function Analytics() {
 
   return (
     <div>
@@ -22,11 +22,11 @@ function UserProfile() {
           width: "100%",
         }}
       >
-        <h1 style={{marginBottom:"5rem"}}>User Profile</h1>
+        <h1 style={{marginBottom:"5rem"}}>Analytics</h1>
         
       </Container>
     </div>
   );
 }
 
-export default UserProfile;
+export default Analytics;

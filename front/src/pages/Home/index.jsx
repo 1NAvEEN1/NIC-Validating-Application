@@ -7,9 +7,9 @@ import {
   Link,
   Grid,
 } from "@mui/material";
-import UserIcon from "../assets/Userlogo.png";
-import recordsIcon from "../assets/recordsIcon.png";
-import analyzeIcon from "../assets/analyzeIcon.png";
+import UserIcon from "../../assets/Userlogo.png";
+import recordsIcon from "../../assets/recordsIcon.png";
+import analyzeIcon from "../../assets/analyzeIcon.png";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
@@ -22,7 +22,7 @@ function Home() {
     navigate("./Analytics");
   };
   const clickValidation = () => {
-    navigate("./Validation");
+    navigate("./UserProfile");
   };
 
   return (

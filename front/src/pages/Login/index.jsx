@@ -4,8 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
+import { useSignIn } from "react-auth-kit"
+
 
 const LoginForm = () => {
+  const signIn = useSignIn();
   const navigate = useNavigate();
 
   // State to manage login errors
@@ -29,6 +32,12 @@ const LoginForm = () => {
         .post("http://localhost:3001/Users/login", data)
         .then((response) => {
           if (response.status === 200) {
+            signIn({
+              token: response.data.token,
+              expiresIn: 3600,
+              tokenType: "Bearer",
+              authState: { Username: data.UserName}
+            })
             navigate("/");
           } else {
             // Handle login error and set the error message
