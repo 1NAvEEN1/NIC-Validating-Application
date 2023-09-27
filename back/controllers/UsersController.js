@@ -4,7 +4,11 @@ const jwt = require("jsonwebtoken");
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const listOfUsers = await Users.findAll();
+    const listOfUsers = await Users.findAll({
+      attributes: {
+        exclude: ["Password"], // Exclude the 'Password' attribute from the result
+      },
+    });
     res.send(listOfUsers);
   } catch (error) {
     console.error("Error fetching users:", error);
