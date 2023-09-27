@@ -1,73 +1,53 @@
 import React, { useEffect, useState } from "react";
 import {
   Container,
-  TextField,
-  Button,
   Typography,
-  Link,
   Grid,
+  Box,
+  Divider,
+  Button,
+  IconButton,
+  TextField,
 } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Cancel";
 import Cookies from "js-cookie";
-import axios from "axios"; // Import Axios for making API requests
+import axios from "axios";
 
-function ViewDetails() {
+function UpdateDetails() {
+  let userID;
   const [userName, setUserName] = useState("");
-  const [name, setName] = useState(""); // Add state variables for user details
+  const [name, setName] = useState("");
   const [nic, setNic] = useState("");
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("");
   const [address, setAddress] = useState("");
   const [mobileNo, setMobileNo] = useState("");
   const [serviceProvider, setServiceProvider] = useState("");
-
-  const [userNameID, setUserNameID] = useState("");
-
-  useEffect(() => {
-    // Retrieve the _auth_state cookie
-    const authStateCookie = Cookies.get("_auth_state");
-
-    // Check if the cookie exists and is not empty
-    if (authStateCookie) {
-      try {
-        // Parse the JSON data in the cookie
-        const authState = JSON.parse(authStateCookie);
-
-        // Check if the "Username" property exists in the parsed data
-        if (authState && authState.Username) {
-          // Set the username in the state
-          setUserNameID(authState.Username);
-        }
-      } catch (error) {
-        console.error("Error parsing _auth_state cookie:", error);
-      }
-    }
-  }, []);
+  const [editMode, setEditMode] = useState(false);
+  const [age, setAge] = useState("");
 
   useEffect(() => {
     const authStateCookie = Cookies.get("_auth_state");
 
-    // Check if the cookie exists and is not empty
     if (authStateCookie) {
       try {
-        // Parse the JSON data in the cookie
         const authState = JSON.parse(authStateCookie);
 
-        // Check if the "Username" property exists in the parsed data
         if (authState && authState.Username) {
-          // Set the username in the state
-          setUserNameID(authState.Username);
+          userID = authState.Username;
+          setUserName(authState.Username);
         }
       } catch (error) {
         console.error("Error parsing _auth_state cookie:", error);
       }
     }
 
-    // Make a GET request to fetch user details based on the ID
     axios
-      .get(`http://localhost:3001/Users/${userNameID}`)
+      .get(`http://localhost:3001/Users/${userID}`)
       .then((response) => {
         const userData = response.data;
-        // Set the user details in the state
         setUserName(userData.UserName);
         setName(userData.Name);
         setNic(userData.NIC);
@@ -76,63 +56,213 @@ function ViewDetails() {
         setAddress(userData.Address);
         setMobileNo(userData.MobileNo);
         setServiceProvider(userData.ServiceProvider);
+
+        // Calculate the age based on date of birth
+        const dobDate = new Date(userData.DOB);
+        const today = new Date();
+        const age = today.getFullYear() - dobDate.getFullYear();
+        setAge(age);
       })
       .catch((error) => {
         console.error("Error fetching user profile:", error);
       });
-  }, [userNameID]);
+  }, []);
 
-  const handleUpdateProfile = () => {
-    // Prepare the updated user profile data
-    const updatedProfile = {
-      Name: name,
-      NIC: nic,
-      DOB: dob,
-      Gender: gender,
-      Address: address,
-      MobileNo: mobileNo,
-      ServiceProvider: serviceProvider,
-    };
+  const handleEditClick = () => {
+    setEditMode(true);
+  };
 
-    // Make a PUT request to update the user's profile
-    axios
-      .put(`http://localhost:3001/Users/${userNameID}`, updatedProfile)
-      .then((response) => {
-        console.log("User profile updated successfully");
-      })
-      .catch((error) => {
-        console.error("Error updating user profile:", error);
-      });
+  const handleSaveClick = () => {
+    // Handle saving updated profile data here
+    if ((userName, name, nic, address, mobileNo !== "")) {
+      setEditMode(false);
+    }
+    // You can make a PUT request to update the user's profile
+  };
+
+  const handleCancelClick = () => {
+    // Handle canceling the edit mode here
+    setEditMode(false);
   };
 
   return (
     <div>
-        <h1 style={{ marginBottom: "5rem" }}>User Profile</h1>
-        <h2>UserName: {userNameID}</h2>
-        <TextField
-          label="Name"
-          variant="standard"
-          fullWidth
-          margin="normal"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          disabled
-        />
-        {/* Add similar TextField components for other user details */}
+      <Grid container spacing={4}>
+        <Grid item xs={12} sm={4}>
+          <Typography color="error" variant="body1" sx={{ fontWeight: "bold" }}>
+            User Name
+          </Typography>
+          {editMode ? (
+            <TextField
+              fullWidth
+              variant="outlined"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+            />
+          ) : (
+            <Typography sx={{ fontWeight: "bold" }}>{userName}</Typography>
+          )}
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Typography color="error" variant="body1" sx={{ fontWeight: "bold" }}>
+            Full Name
+          </Typography>
+          {editMode ? (
+            <TextField
+              fullWidth
+              variant="outlined"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          ) : (
+            <Typography sx={{ fontWeight: "bold" }}>{name}</Typography>
+          )}
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Typography color="error" variant="body1" sx={{ fontWeight: "bold" }}>
+            Address
+          </Typography>
+          {editMode ? (
+            <TextField
+              fullWidth
+              variant="outlined"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+            />
+          ) : (
+            <Typography sx={{ fontWeight: "bold" }}>{address}</Typography>
+          )}
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Typography color="error" variant="body1" sx={{ fontWeight: "bold" }}>
+            NIC Number
+          </Typography>
+          {editMode ? (
+            <TextField
+              fullWidth
+              variant="outlined"
+              value={nic}
+              onChange={(e) => setNic(e.target.value)}
+            />
+          ) : (
+            <Typography sx={{ fontWeight: "bold" }}>{nic}</Typography>
+          )}
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Typography color="error" variant="body1" sx={{ fontWeight: "bold" }}>
+            Mobile No.
+          </Typography>
+          {editMode ? (
+            <TextField
+              fullWidth
+              variant="outlined"
+              value={mobileNo}
+              onChange={(e) => setMobileNo(e.target.value)}
+            />
+          ) : (
+            <Typography sx={{ fontWeight: "bold" }}>{mobileNo}</Typography>
+          )}
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          {editMode ? (
+            <div></div>
+          ) : (
+            <div>
+              <Typography
+                color="error"
+                variant="body1"
+                sx={{ fontWeight: "bold" }}
+              >
+                Date of Birth
+              </Typography>
+              <Typography sx={{ fontWeight: "bold" }}>{dob}</Typography>
+            </div>
+          )}
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          {editMode ? (
+            <div></div>
+          ) : (
+            <div>
+              <Typography
+                color="error"
+                variant="body1"
+                sx={{ fontWeight: "bold" }}
+              >
+                Gender
+              </Typography>
+              <Typography sx={{ fontWeight: "bold" }}>{gender}</Typography>
+            </div>
+          )}
+        </Grid>
+
+        <Grid item xs={12} sm={4}>
+          {editMode ? (
+            <div></div>
+          ) : (
+            <div>
+              <Typography
+                color="error"
+                variant="body1"
+                sx={{ fontWeight: "bold" }}
+              >
+                Service Provider
+              </Typography>
+              <Typography sx={{ fontWeight: "bold" }}>
+                {serviceProvider}
+              </Typography>
+            </div>
+          )}
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          {editMode ? (
+            <div></div>
+          ) : (
+            <div>
+              <Typography
+                color="error"
+                variant="body1"
+                sx={{ fontWeight: "bold" }}
+              >
+                Age
+              </Typography>
+              <Typography sx={{ fontWeight: "bold" }}>{age}</Typography>
+            </div>
+          )}
+        </Grid>
+      </Grid>
+
+      {editMode ? (
+        <Box mt={5}>
+          <Button
+            startIcon={<SaveIcon />}
+            variant="contained"
+            color="error"
+            onClick={handleSaveClick}
+          >
+            Save
+          </Button>
+          <IconButton
+            onClick={handleCancelClick}
+            sx={{ ml: 2 }}
+            aria-label="cancel"
+          >
+            <CancelIcon />
+          </IconButton>
+        </Box>
+      ) : (
         <Button
+          startIcon={<EditIcon />}
           variant="contained"
           color="error"
-          fullWidth
-          onClick={handleUpdateProfile}
-          sx={{
-            backgroundColor: "#A50113",
-            borderRadius: "2rem",
-          }}
+          onClick={handleEditClick}
+          sx={{ mt: 3 }}
         >
-          Update Profile
+          Edit Profile
         </Button>
+      )}
     </div>
   );
 }
 
-export default ViewDetails;
+export default UpdateDetails;
