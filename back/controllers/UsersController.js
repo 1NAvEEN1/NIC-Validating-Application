@@ -176,4 +176,33 @@ exports.disableUser = async (req, res) => {
   }
 };
 
+exports.updatePassword = async (req, res) => {
+  try {
+    const { UserName, CurrentPassword, NewPassword } = req.body;
+
+    // Find the user by username
+    const user = await Users.findOne({ where: { UserName } });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Verify the current password
+    const isPasswordValid = await bcrypt.compare(CurrentPassword, user.Password);
+    if (!isPasswordValid) {
+      return res.status(400).json({ error: "Current password is incorrect" });
+    }
+
+    // Hash and update the new password
+    const newPasswordHash = await bcrypt.hash(NewPassword, 10);
+    user.Password = newPasswordHash;
+
+    await user.save(); // Save the updated user
+
+    res.json("Password updated successfully");
+  } catch (error) {
+    console.error("Error updating password:", error);
+    res.status(500).json({ error: "Failed to update password" });
+  }
+};
 

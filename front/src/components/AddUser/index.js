@@ -269,7 +269,23 @@ const AddUser = (props) => {
       <form>
         <div>
           <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
+          {useFor === "update" ? (
+              <Grid item xs={12} md={12}>
+              <TextField
+                label="Full Name"
+                variant="standard"
+                fullWidth
+                margin="normal"
+                color="error"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                error={!!fullNameError}
+                helperText={fullNameError}
+              />
+            </Grid>
+            ) : (
+              <div>
+                <Grid item xs={12} md={6}>
               <TextField
                 label="Username"
                 variant="standard"
@@ -295,6 +311,9 @@ const AddUser = (props) => {
                 helperText={fullNameError}
               />
             </Grid>
+              </div>
+            )}
+            
             {useFor === "update" ? (
               <div></div>
             ) : (

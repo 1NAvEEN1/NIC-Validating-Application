@@ -10,6 +10,7 @@ import axios from "axios";
 import EditIcon from "@mui/icons-material/Edit";
 
 import AddUser from '../../components/AddUser';
+import UpdatePassword from "./updatePassword";
 
 function ViewDetails() {
   let userID;
@@ -24,6 +25,7 @@ function ViewDetails() {
   const [age, setAge] = useState("");
 
   const [openModal, setOpenModal] = useState(false);
+  const [openModalPW, setOpenModalPW] = useState(false);
 
   useEffect(() => {
     const authStateCookie = Cookies.get("_auth_state");
@@ -63,16 +65,19 @@ function ViewDetails() {
       .catch((error) => {
         console.error("Error fetching user profile:", error);
       });
-  }, []);
+  }, [openModal]);
 
   const handleEditClick = () => {
     setOpenModal(true);
   };
 
-  const handleChangePW = () => {};
+  const handleChangePW = () => {
+    setOpenModalPW(true);
+  };
 
   const handleCloseModal = () => {
     setOpenModal(false);
+    setOpenModalPW(false);
   };
 
   return (
@@ -190,6 +195,18 @@ function ViewDetails() {
         </DialogTitle>
         <DialogContent>
           <AddUser useFor="update" username={userName} name={name} nic={nic} dob={dob} gender={gender} address={address} mobileNo={mobileNo} serviceProvider={serviceProvider} age={age}/>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal} sx={{mr:'45%'}} color="error">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={openModalPW} onClose={handleCloseModal} fullWidth maxWidth="sm">
+       
+        <DialogContent>
+          <UpdatePassword username={userName}/>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseModal} sx={{mr:'45%'}} color="error">
