@@ -6,7 +6,10 @@ exports.getAllUsers = async (req, res) => {
   try {
     const listOfUsers = await Users.findAll({
       attributes: {
-        exclude: ["Password"], // Exclude the 'Password' attribute from the result
+        exclude: ["Password","Status"], // Exclude the 'Password' attribute from the result
+      },
+      where: {
+        Status: true, // Add a condition to filter users with Status = true
       },
     });
     res.send(listOfUsers);
@@ -16,6 +19,7 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
+
 exports.createUser = async (req, res) => {
   try {
     const {
@@ -24,7 +28,6 @@ exports.createUser = async (req, res) => {
       Name,
       NIC,
       DOB,
-      Age,
       Gender,
       Address,
       MobileNo,
@@ -37,11 +40,11 @@ exports.createUser = async (req, res) => {
         Name: Name,
         NIC: NIC,
         DOB: DOB,
-        Age: Age,
         Gender: Gender,
         Address: Address,
         MobileNo: MobileNo,
         ServiceProvider: ServiceProvider,
+        Status: true
       });
       res.json("Success");
     });
@@ -84,7 +87,6 @@ exports.viewUser = async (req, res) => {
         "Name",
         "NIC",
         "DOB",
-        "Age",
         "Gender",
         "Address",
         "MobileNo",
@@ -109,11 +111,9 @@ exports.updateUser = async (req, res) => {
     const { id } = req.params; // Assuming you pass the user ID as a URL parameter
     const {
       UserName,
-      Password,
       Name,
       NIC,
       DOB,
-      Age,
       Gender,
       Address,
       MobileNo,
@@ -132,17 +132,17 @@ exports.updateUser = async (req, res) => {
     user.Name = Name;
     user.NIC = NIC;
     user.DOB = DOB;
-    user.Age = Age;
     user.Gender = Gender;
     user.Address = Address;
     user.MobileNo = MobileNo;
     user.ServiceProvider = ServiceProvider;
+    user.Status = true
 
-    if (Password) {
-      // If a new password is provided, hash and update it
-      const hash = await bcrypt.hash(Password, 10);
-      user.Password = hash;
-    }
+    // if (Password) {
+    //   // If a new password is provided, hash and update it
+    //   const hash = await bcrypt.hash(Password, 10);
+    //   user.Password = hash;
+    // }
 
     await user.save(); // Save the updated user
 
@@ -152,3 +152,28 @@ exports.updateUser = async (req, res) => {
     res.status(500).json({ error: "Failed to update user" });
   }
 };
+
+exports.disableUser = async (req, res) => {
+  try {
+    const { UserName } = req.params; // Assuming you pass the username as a URL parameter
+
+    // Find the user by username
+    const user = await Users.findOne({ where: { UserName } });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Update user's Status to false (disabled)
+    user.Status = false;
+    
+    await user.save(); // Save the updated user
+
+    res.json("User disabled successfully");
+  } catch (error) {
+    console.error("Error disabling user:", error);
+    res.status(500).json({ error: "Failed to disable user" });
+  }
+};
+
+

@@ -189,7 +189,7 @@ function ViewDetails() {
           <h3>Add User</h3>
         </DialogTitle>
         <DialogContent>
-          <AddUser useFor="update" username={userName} name={name}/>
+          <AddUser useFor="update" username={userName} name={name} nic={nic} dob={dob} gender={gender} address={address} mobileNo={mobileNo} serviceProvider={serviceProvider} age={age}/>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseModal} sx={{mr:'45%'}} color="error">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Container, Typography, Grid, Button } from "@mui/material";
+import { Container, Typography, Grid, Button, Divider } from "@mui/material";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { BarChart } from "@mui/x-charts/BarChart"; // Import BarChart
 import axios from "axios";
@@ -91,7 +91,7 @@ function Analytics() {
         <Typography variant="h4" gutterBottom>
           Analytics
         </Typography>
-        
+        <Divider sx={{ my: 3 }} />
         <Grid container>
         <Grid item xs={12}>
         <Typography variant="h5" mt={4} mb={-2}>

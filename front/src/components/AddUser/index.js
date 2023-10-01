@@ -83,20 +83,22 @@ const AddUser = (props) => {
       setUsernameError("");
     }
 
-    if (!password) {
-      setPasswordError("Password is required");
-      isValid = false;
-    } else {
-      setPasswordError("");
-    }
+    if(useFor !== "update"){
+      if (!password) {
+        setPasswordError("Password is required");
+        isValid = false;
+      } else {
+        setPasswordError("");
+      }
 
-    if (password !== reEnterPassword) {
-      setReEnterPasswordError("Passwords do not match");
-      isValid = false;
-    } else {
-      setReEnterPasswordError("");
+      if (password !== reEnterPassword) {
+        setReEnterPasswordError("Passwords do not match");
+        isValid = false;
+      } else {
+        setReEnterPasswordError("");
+      }
     }
-
+    
     if (!fullName) {
       setFullNameError("Full Name is required");
       isValid = false;
@@ -133,26 +135,50 @@ const AddUser = (props) => {
       } else if (NICType === "new") {
         nicToSubmit = nicNum;
       }
-      axios
-        .post("http://localhost:3001/Users", {
-          UserName: username,
-          Password: password,
-          Name: fullName,
-          NIC: nicToSubmit,
-          DOB: dateOfBirth,
-          Age: age,
-          Gender: gender,
-          Address: address,
-          MobileNo: phone,
-          ServiceProvider: serviceProvider,
-        })
-        .then(() => {
-          console.log("New validation record created");
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-      if (useFor === "addUser") {
+
+      if (useFor === "update") {
+        axios
+          .put(`http://localhost:3001/Users/${username}`, {
+            UserName: username,
+            Name: fullName,
+            NIC: nicToSubmit,
+            DOB: dateOfBirth,
+            Age: age,
+            Gender: gender,
+            Address: address,
+            MobileNo: phone,
+            ServiceProvider: serviceProvider,
+          })
+          .then(() => {
+            console.log("Profile details updated");
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+        console.log("hi");
+      } else {
+        axios
+          .post("http://localhost:3001/Users", {
+            UserName: username,
+            Password: password,
+            Name: fullName,
+            NIC: nicToSubmit,
+            DOB: dateOfBirth,
+            Age: age,
+            Gender: gender,
+            Address: address,
+            MobileNo: phone,
+            ServiceProvider: serviceProvider,
+          })
+          .then(() => {
+            console.log("New validation record created");
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+
+      if (useFor === "addUser"||useFor === "update") {
       } else {
         navigate("../login");
       }
@@ -269,35 +295,40 @@ const AddUser = (props) => {
                 helperText={fullNameError}
               />
             </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField
-                label="Password"
-                type="password"
-                variant="standard"
-                fullWidth
-                margin="normal"
-                color="error"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                error={!!passwordError}
-                helperText={passwordError}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField
-                label="Re-enter Password"
-                type="password"
-                variant="standard"
-                fullWidth
-                margin="normal"
-                color="error"
-                value={reEnterPassword}
-                onChange={(e) => setReEnterPassword(e.target.value)}
-                error={!!reEnterPasswordError}
-                helperText={reEnterPasswordError}
-              />
-            </Grid>
-
+            {useFor === "update" ? (
+              <div></div>
+            ) : (
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    label="Password"
+                    type="password"
+                    variant="standard"
+                    fullWidth
+                    margin="normal"
+                    color="error"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    error={!!passwordError}
+                    helperText={passwordError}
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    label="Re-enter Password"
+                    type="password"
+                    variant="standard"
+                    fullWidth
+                    margin="normal"
+                    color="error"
+                    value={reEnterPassword}
+                    onChange={(e) => setReEnterPassword(e.target.value)}
+                    error={!!reEnterPasswordError}
+                    helperText={reEnterPasswordError}
+                  />
+                </Grid>
+              </Grid>
+            )}
             <Grid item xs={12}>
               <TextField
                 label="Address"
@@ -420,7 +451,7 @@ const AddUser = (props) => {
               marginTop: "16px",
             }}
           >
-            {useFor === "addUser" ? <div>Add User</div> : <div>Sign Up</div>}
+            {useFor === "addUser" ? <div>Add User</div> :useFor === "update"? <div>Update</div>: <div>Sign Up</div>}
           </Button>
         </div>
       </form>

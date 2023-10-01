@@ -23,10 +23,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATEONLY,
         allowNull: false,
       },
-      Age: {
-        type: DataTypes.INTEGER(3),
-        allowNull: false,
-      },
       Gender: {
         type: DataTypes.STRING(8),
         allowNull: false,
@@ -43,6 +39,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(50),
         allowNull: false,
       },
+      Status: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      }
     },
     {
       timestamps: false,

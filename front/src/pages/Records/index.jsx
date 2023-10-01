@@ -24,14 +24,32 @@ function Records() {
   const [listOfUsers, setListOfUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [openModelRow, setOpenModalRow] = useState(false);
+  const [deleteRow, setDeleteRow] = useState(false);
 
-  const handleVerifyClick = () => {
+  const handleAddUserClick = () => {
     setOpenModal(true);
   };
 
   const handleCloseModal = () => {
     setOpenModal(false);
   };
+
+  const handleRowClick = () => {
+    setOpenModalRow(true);
+  };
+
+  const handleCloseRowClickModal = () => {
+    setOpenModalRow(false);
+  };
+
+  const handleDeleteRow = () => {
+    setDeleteRow(true);
+  }
+
+  const handleCloseDeleteRow = () => {
+    setDeleteRow(false);
+  }
 
   useEffect(() => {
     axios.get("http://localhost:3001/Users").then((response) => {
@@ -173,7 +191,7 @@ function Records() {
             <Button
               variant="contained"
               color="error"
-              onClick={handleVerifyClick}
+              onClick={handleAddUserClick}
             >
               Add User
             </Button>
@@ -201,6 +219,7 @@ function Records() {
               display: "flex",
               fontSize: 14,
             }}
+            onRowClick={handleRowClick}
             getRowId={(row) => row.id} // Specify the custom id for each row
           />
         </div>
@@ -219,6 +238,46 @@ function Records() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseModal} sx={{ mr: "45%" }} color="error">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Row click view details  */}
+      <Dialog
+        open={openModelRow}
+        onClose={handleCloseRowClickModal}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>
+          <h3>User Details</h3>
+        </DialogTitle>
+        <DialogContent>
+          <AddUser useFor="addUser" />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseRowClickModal} sx={{ mr: "45%" }} color="error">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Delete row  */}
+      <Dialog
+        open={deleteRow}
+        onClose={handleCloseDeleteRow}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>
+          <h3>Delete user</h3>
+        </DialogTitle>
+        <DialogContent>
+          <h1>Delete user</h1>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDeleteRow} sx={{ mr: "45%" }} color="error">
             Close
           </Button>
         </DialogActions>
