@@ -9,7 +9,10 @@ import {
   DialogContent,
   DialogActions,
   Typography,
-  Divider
+  Divider,
+  IconButton,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import {
   DataGrid,
@@ -17,8 +20,10 @@ import {
   GridToolbarExport,
 } from "@mui/x-data-grid";
 import axios from "axios";
-
+import DeleteIcon from "@mui/icons-material/Delete";
 import AddUser from "../../components/AddUser";
+import ViewUser from "../UserProfile/viewDetails";
+import DeleteUser from "./deleteUser";
 
 function Records() {
   const [listOfUsers, setListOfUsers] = useState([]);
@@ -26,6 +31,9 @@ function Records() {
   const [openModal, setOpenModal] = useState(false);
   const [openModelRow, setOpenModalRow] = useState(false);
   const [deleteRow, setDeleteRow] = useState(false);
+  const [selectedUser, setSelectedUser] = useState("");
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const handleAddUserClick = () => {
     setOpenModal(true);
@@ -35,21 +43,34 @@ function Records() {
     setOpenModal(false);
   };
 
-  const handleRowClick = () => {
+  const handleRowClick = (params) => {
+    setSelectedUser(params.row.id);
     setOpenModalRow(true);
   };
 
   const handleCloseRowClickModal = () => {
     setOpenModalRow(false);
+    setDeleteRow(false);
   };
 
-  const handleDeleteRow = () => {
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
+  const handleDeleteUserSuccess = () => {
+    setSnackbarOpen(true); // Show the success Snackbar
+  };
+
+  const handleDeleteRow = (event, params) => {
+    // Prevent event propagation to stop opening the row click modal
+    event.stopPropagation();
+    setSelectedUser(params.row.id);
     setDeleteRow(true);
-  }
+  };
 
   const handleCloseDeleteRow = () => {
     setDeleteRow(false);
-  }
+  };
 
   useEffect(() => {
     axios.get("http://localhost:3001/Users").then((response) => {
@@ -60,7 +81,7 @@ function Records() {
       setListOfUsers(UsersWithId);
       setFilteredUsers(UsersWithId);
     });
-  }, [openModal]);
+  }, [openModal, deleteRow, openModelRow]);
 
   const handleSearchChange = (event) => {
     const value = event.target.value.toLowerCase();
@@ -147,9 +168,9 @@ function Records() {
       align: "center",
       renderCell: (params) => (
         <div>
-          <Button variant="outlined" size="small" color="error">
-            Delete
-          </Button>
+          <IconButton onClick={(event) => handleDeleteRow(event, params)}>
+            <DeleteIcon />
+          </IconButton>
         </div>
       ),
     },
@@ -248,16 +269,20 @@ function Records() {
         open={openModelRow}
         onClose={handleCloseRowClickModal}
         fullWidth
-        maxWidth="sm"
+        maxWidth="md"
       >
         <DialogTitle>
           <h3>User Details</h3>
         </DialogTitle>
         <DialogContent>
-          <AddUser useFor="addUser" />
+          <ViewUser username={selectedUser} />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseRowClickModal} sx={{ mr: "45%" }} color="error">
+          <Button
+            onClick={handleCloseRowClickModal}
+            sx={{ mr: "45%" }}
+            color="error"
+          >
             Close
           </Button>
         </DialogActions>
@@ -268,20 +293,31 @@ function Records() {
         open={deleteRow}
         onClose={handleCloseDeleteRow}
         fullWidth
-        maxWidth="sm"
+        maxWidth="xs"
       >
         <DialogTitle>
-          <h3>Delete user</h3>
+          <h3>Delete user {selectedUser}</h3>
         </DialogTitle>
-        <DialogContent>
-          <h1>Delete user</h1>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDeleteRow} sx={{ mr: "45%" }} color="error">
-            Close
-          </Button>
-        </DialogActions>
+        <DeleteUser
+          username={selectedUser}
+          onClose={handleCloseDeleteRow}
+          onDeleteSuccess={handleDeleteUserSuccess}
+        />
       </Dialog>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Alert severity="success" sx={{ width: "100%" }}>
+          User deleted successfully!
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

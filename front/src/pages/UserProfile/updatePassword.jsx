@@ -17,6 +17,11 @@ function UpdatePassword(props) {
   const [message, setMessage] = useState("");
 
   const handleUpdatePassword = () => {
+    
+    if (!currentPassword || !newPassword || !confirmNewPassword) {
+        setMessage("All fields are required.");
+        return;
+      }
     // Check if new password and confirm password match
     if (newPassword !== confirmNewPassword) {
       setMessage("New passwords do not match.");
@@ -41,11 +46,11 @@ function UpdatePassword(props) {
 
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom >
         Update Password
       </Typography>
       <Divider sx={{ my: 3 }} />
-      <Grid container spacing={4}>
+      <Grid container spacing={4} marginTop={"2rem"}>
         <Grid item xs={12}>
           <TextField
             type="password"

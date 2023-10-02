@@ -3,17 +3,20 @@ import {
   Typography,
   Grid,
   Button,
-  Dialog,DialogTitle, DialogContent, DialogActions
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import Cookies from "js-cookie";
 import axios from "axios";
 import EditIcon from "@mui/icons-material/Edit";
 
-import AddUser from '../../components/AddUser';
+import AddUser from "../../components/AddUser";
 import UpdatePassword from "./updatePassword";
 
-function ViewDetails() {
-  let userID;
+function ViewDetails(props) {
+  let userID = props.username;
   const [userName, setUserName] = useState("");
   const [name, setName] = useState("");
   const [nic, setNic] = useState("");
@@ -28,18 +31,20 @@ function ViewDetails() {
   const [openModalPW, setOpenModalPW] = useState(false);
 
   useEffect(() => {
-    const authStateCookie = Cookies.get("_auth_state");
+    if (!props.username) {
+      const authStateCookie = Cookies.get("_auth_state");
 
-    if (authStateCookie) {
-      try {
-        const authState = JSON.parse(authStateCookie);
+      if (authStateCookie) {
+        try {
+          const authState = JSON.parse(authStateCookie);
 
-        if (authState && authState.Username) {
-          userID = authState.Username;
-          setUserName(authState.Username);
+          if (authState && authState.Username) {
+            userID = authState.Username;
+            setUserName(authState.Username);
+          }
+        } catch (error) {
+          console.error("Error parsing _auth_state cookie:", error);
         }
-      } catch (error) {
-        console.error("Error parsing _auth_state cookie:", error);
       }
     }
 
@@ -165,51 +170,87 @@ function ViewDetails() {
           </div>
         </Grid>
       </Grid>
-      <Grid container spacing={2} marginTop={5}>
-        <Grid item md={6}>
-          <Button
-            startIcon={<EditIcon />}
-            variant="contained"
-            color="error"
-            onClick={handleChangePW}
-            sx={{ mt: 3 }}
-          >
-            Change Password
-          </Button>
-        </Grid>
-        <Grid item md={6}>
-          <Button
-            startIcon={<EditIcon />}
-            variant="contained"
-            color="error"
-            onClick={handleEditClick}
-            sx={{ mt: 3 }}
-          >
-            Edit Profile
-          </Button>
-        </Grid>
-      </Grid>
-      <Dialog open={openModal} onClose={handleCloseModal} fullWidth maxWidth="sm">
+      
+        {props.username ? (
+          <Grid item md={6}>
+            <Button
+              startIcon={<EditIcon />}
+              variant="contained"
+              color="error"
+              onClick={handleEditClick}
+              sx={{ mt: 3 }}
+            >
+              Edit Profile
+            </Button>
+          </Grid>
+        ) : (
+          <Grid container spacing={2} marginTop={5}>
+            <Grid item md={6}>
+              <Button
+                startIcon={<EditIcon />}
+                variant="contained"
+                color="error"
+                onClick={handleChangePW}
+                sx={{ mt: 3 }}
+              >
+                Change Password
+              </Button>
+            </Grid>
+            <Grid item md={6}>
+              <Button
+                startIcon={<EditIcon />}
+                variant="contained"
+                color="error"
+                onClick={handleEditClick}
+                sx={{ mt: 3 }}
+              >
+                Edit Profile
+              </Button>
+            </Grid>
+            </Grid>
+        )}
+      
+      <Dialog
+        open={openModal}
+        onClose={handleCloseModal}
+        fullWidth
+        maxWidth="sm"
+      >
         <DialogTitle>
           <h3>Add User</h3>
         </DialogTitle>
         <DialogContent>
-          <AddUser useFor="update" username={userName} name={name} nic={nic} dob={dob} gender={gender} address={address} mobileNo={mobileNo} serviceProvider={serviceProvider} age={age}/>
+          <AddUser
+            useFor="update"
+            username={userName}
+            name={name}
+            nic={nic}
+            dob={dob}
+            gender={gender}
+            address={address}
+            mobileNo={mobileNo}
+            serviceProvider={serviceProvider}
+            age={age}
+          />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseModal} sx={{mr:'45%'}} color="error">
+          <Button onClick={handleCloseModal} sx={{ mr: "45%" }} color="error">
             Close
           </Button>
         </DialogActions>
       </Dialog>
 
-      <Dialog open={openModalPW} onClose={handleCloseModal} fullWidth maxWidth="sm">
-       
+      <Dialog
+        open={openModalPW}
+        onClose={handleCloseModal}
+        fullWidth
+        maxWidth="sm"
+      >
         <DialogContent>
-          <UpdatePassword username={userName}/>
+          <UpdatePassword username={userName} />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseModal} sx={{mr:'45%'}} color="error">
+          <Button onClick={handleCloseModal} sx={{ mr: "45%" }} color="error">
             Close
           </Button>
         </DialogActions>
