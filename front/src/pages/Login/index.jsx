@@ -1,11 +1,17 @@
 import React, { useState } from "react";
-import { Container, TextField, Button, Typography, Link, Alert } from "@mui/material";
+import {
+  Container,
+  TextField,
+  Button,
+  Typography,
+  Link,
+  Alert,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
-import { useSignIn } from "react-auth-kit"
-
+import { useSignIn } from "react-auth-kit";
 
 const LoginForm = () => {
   const signIn = useSignIn();
@@ -36,8 +42,8 @@ const LoginForm = () => {
               token: response.data.token,
               expiresIn: 3600,
               tokenType: "Bearer",
-              authState: { Username: data.UserName}
-            })
+              authState: { Username: data.UserName },
+            });
             navigate("/");
           } else {
             // Handle login error and set the error message
@@ -53,7 +59,14 @@ const LoginForm = () => {
   });
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "80vh",
+      }}
+    >
       <Container
         maxWidth="xs"
         sx={{
@@ -62,26 +75,35 @@ const LoginForm = () => {
           borderRadius: "2rem",
           padding: "2rem 2rem 2rem 2rem",
         }}
-        elevation={0}
       >
         <form onSubmit={formik.handleSubmit}>
           <div>
             <Typography
-              variant="h4"
-              align="center"
+              variant="h3"
+              align="left"
               gutterBottom
               sx={{ color: "#C10206" }}
             >
               Login
             </Typography>
-            {loginError && (
-              <Alert severity="error" sx={{ marginBottom: "16px" }}>
-                {loginError}
-              </Alert>
-            )}
+            <div style={{ minHeight: "3rem" }}>
+              {loginError ? (
+                <Alert severity="error">{loginError}</Alert>
+              ) : (
+                <Typography
+                  variant="body1"
+                  align="left"
+                  gutterBottom
+                  sx={{ paddingTop: "-1rem" }}
+                >
+                  Unlock a World of Possibilities. <b>Join Us Today!</b>
+                </Typography>
+              )}
+            </div>
+
             <TextField
               label="Username"
-              variant="standard"
+              variant="outlined"
               autoComplete="off"
               color="error"
               fullWidth
@@ -91,11 +113,13 @@ const LoginForm = () => {
               onChange={formik.handleChange}
               error={formik.touched.username && Boolean(formik.errors.username)}
               helperText={formik.touched.username && formik.errors.username}
+              InputProps={{ sx: { borderRadius: 4 } }}
+              sx={{ minHeight: "5rem",marginBottom: -2 }}
             />
             <TextField
               label="Password"
               type="password"
-              variant="standard"
+              variant="outlined"
               color="error"
               fullWidth
               margin="normal"
@@ -104,7 +128,18 @@ const LoginForm = () => {
               onChange={formik.handleChange}
               error={formik.touched.password && Boolean(formik.errors.password)}
               helperText={formik.touched.password && formik.errors.password}
+              sx={{ minHeight: "5rem", borderRadius:'1rem' }}
+              InputProps={{ sx: { borderRadius: 4 } }}
             />
+            <Typography
+              variant="body2"
+              align="left"
+              style={{ marginBottom: "16px" }}
+            >
+              <Link href="../forgotPassword" color="error">
+                <b>Forgot Password?</b>
+              </Link>
+              </Typography>
             <Button
               type="submit"
               variant="contained"
@@ -112,24 +147,19 @@ const LoginForm = () => {
               fullWidth
               sx={{
                 backgroundColor: "#A50113",
-                borderRadius: "2rem",
+                borderRadius: 3,
               }}
             >
               Login
             </Button>
             <Typography
               variant="body2"
-              align="center"
-              style={{ marginTop: "16px" }}
+              align="left"
+              style={{ marginTop: 40 }}
             >
-              <Link href="#" color="error">
-                Forgot Password?
-              </Link>
-              <br />
-              <br />
               Don't have an account?
               <Link href="../signup" color="error">
-                Signup now
+                <b> Create an Account</b>
               </Link>
             </Typography>
           </div>

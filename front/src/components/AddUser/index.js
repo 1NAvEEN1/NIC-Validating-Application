@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, Button, Typography, Grid } from "@mui/material";
+import { TextField, Button, Typography, Grid, Divider } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import InputMask from "react-input-mask";
 import axios from "axios";
@@ -83,7 +83,7 @@ const AddUser = (props) => {
       setUsernameError("");
     }
 
-    if(useFor !== "update"){
+    if (useFor !== "update") {
       if (!password) {
         setPasswordError("Password is required");
         isValid = false;
@@ -98,7 +98,7 @@ const AddUser = (props) => {
         setReEnterPasswordError("");
       }
     }
-    
+
     if (!fullName) {
       setFullNameError("Full Name is required");
       isValid = false;
@@ -178,7 +178,7 @@ const AddUser = (props) => {
           });
       }
 
-      if (useFor === "addUser"||useFor === "update") {
+      if (useFor === "addUser" || useFor === "update") {
       } else {
         navigate("../login");
       }
@@ -268,107 +268,135 @@ const AddUser = (props) => {
     <div>
       <form>
         <div>
-          <Grid container spacing={2}>
           {useFor === "update" ? (
+            <Grid container spacing={2}>
               <Grid item xs={12} md={12}>
-              <TextField
-                label="Full Name"
-                variant="standard"
-                fullWidth
-                margin="normal"
-                color="error"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                error={!!fullNameError}
-                helperText={fullNameError}
-              />
-            </Grid>
-            ) : (
-              <div>
-                <Grid item xs={12} md={6}>
-              <TextField
-                label="Username"
-                variant="standard"
-                fullWidth
-                margin="normal"
-                color="error"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                error={!!usernameError}
-                helperText={usernameError}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField
-                label="Full Name"
-                variant="standard"
-                fullWidth
-                margin="normal"
-                color="error"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                error={!!fullNameError}
-                helperText={fullNameError}
-              />
-            </Grid>
-              </div>
-            )}
-            
-            {useFor === "update" ? (
-              <div></div>
-            ) : (
-              <Grid container spacing={2}>
-                <Grid item xs={12} md={6}>
-                  <TextField
-                    label="Password"
-                    type="password"
-                    variant="standard"
-                    fullWidth
-                    margin="normal"
-                    color="error"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    error={!!passwordError}
-                    helperText={passwordError}
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <TextField
-                    label="Re-enter Password"
-                    type="password"
-                    variant="standard"
-                    fullWidth
-                    margin="normal"
-                    color="error"
-                    value={reEnterPassword}
-                    onChange={(e) => setReEnterPassword(e.target.value)}
-                    error={!!reEnterPasswordError}
-                    helperText={reEnterPasswordError}
-                  />
-                </Grid>
+                <TextField
+                  label="Full Name"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  color="error"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  error={!!fullNameError}
+                  helperText={fullNameError}
+                  sx={{ minHeight: "5rem" }}
+                />
               </Grid>
-            )}
-            <Grid item xs={12}>
-              <TextField
-                label="Address"
-                variant="standard"
-                color="error"
-                fullWidth
-                margin="normal"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                error={!!addressError}
-                helperText={addressError}
-              />
             </Grid>
-            <Grid item xs={12} md={6}>
-              {NICType === "new" ? (
-                <div>
+          ) : (
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  label="Username"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  color="error"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  error={!!usernameError}
+                  helperText={usernameError}
+                  sx={{ minHeight: "5rem" }}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  label="Full Name"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  color="error"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  error={!!fullNameError}
+                  helperText={fullNameError}
+                  sx={{ minHeight: "5rem" }}
+                />
+              </Grid>
+            </Grid>
+          )}
+
+          {useFor === "update" ? (
+            <div></div>
+          ) : (
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  label="Password"
+                  type="password"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  color="error"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  error={!!passwordError}
+                  helperText={passwordError}
+                  sx={{ minHeight: "5rem" }}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  label="Re-enter Password"
+                  type="password"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  color="error"
+                  value={reEnterPassword}
+                  onChange={(e) => setReEnterPassword(e.target.value)}
+                  error={!!reEnterPasswordError}
+                  helperText={reEnterPasswordError}
+                  sx={{ minHeight: "5rem" }}
+                />
+              </Grid>
+            </Grid>
+          )}
+          <Grid item xs={12}>
+            <TextField
+              label="Address"
+              variant="outlined"
+              color="error"
+              fullWidth
+              margin="normal"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              error={!!addressError}
+              helperText={addressError}
+              sx={{ minHeight: "5rem" }}
+            />
+          </Grid>
+          <Divider sx={{ my: 3 }} />
+
+          <Grid container spacing={2} >
+            {NICType === "new" ? (
+              <Grid item xs={12} md={6}>
+                <TextField
+                  label="NIC Number"
+                  variant="outlined"
+                  type="tel"
+                  color="error"
+                  autoComplete="off"
+                  onChange={validation}
+                  onInput={sanitizeInput}
+                  inputProps={{ maxLength: 12 }}
+                  error={error}
+                  helperText={nicNumError}
+                  value={nicNum}
+                  fullWidth
+                  margin="normal"
+                  sx={{ minHeight: "5rem" }}
+                />
+              </Grid>
+            ) : (
+              <>
+                <Grid item xs={9} md={6}>
                   <TextField
                     label="NIC Number"
-                    variant="standard"
                     type="tel"
-                    color="error"
+                    variant="outlined"
                     autoComplete="off"
                     onChange={validation}
                     onInput={sanitizeInput}
@@ -377,43 +405,64 @@ const AddUser = (props) => {
                     helperText={nicNumError}
                     value={nicNum}
                     fullWidth
-                    sx={{ width: "9.2rem" }}
                     margin="normal"
-                  />
-                </div>
-              ) : (
-                <div>
-                  <TextField
-                    label="NIC Number"
-                    type="tel"
-                    variant="standard"
-                    autoComplete="off"
-                    onChange={validation}
-                    onInput={sanitizeInput}
-                    inputProps={{ maxLength: 12 }}
-                    error={error}
-                    helperText={nicNumError}
-                    value={nicNum}
-                    fullWidth
-                    margin="normal"
-                    sx={{ width: "7rem" }}
                     color="error"
+                    sx={{ minHeight: "5rem" }}
                   />
+                </Grid>
+                <Grid item xs={3} md={6}>
                   <TextField
-                    variant="standard"
+                    variant="outlined"
                     onChange={NICLetter}
                     inputProps={{ maxLength: 1 }} // Limit to a single character
                     type="text"
                     fullWidth
-                    sx={{ width: "2.2rem" }}
+                    sx={{ width: "5rem" }}
                     label={letter}
                     margin="normal"
                     color="error"
                   />
-                </div>
-              )}
+                </Grid>
+              </>
+            )}
+          </Grid>
+          <Grid container spacing={2}>
+            <Grid item xs={4} md={4}>
+              <TextField
+                label="Date of Birth"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+                fullWidth
+                value={dateOfBirth}
+                disabled
+              />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={4} md={4}>
+              <TextField
+                label="Age"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+                fullWidth
+                value={age}
+                disabled
+              />
+            </Grid>
+            <Grid item xs={4} md={4}>
+              <TextField
+                label="Gender"
+                InputLabelProps={{ shrink: true }}
+                variant="outlined"
+                fullWidth
+                value={gender}
+                disabled
+              />
+            </Grid>
+          </Grid>
+
+          <Divider sx={{ my: 2 }} />
+
+          <Grid container spacing={2}>
+            <Grid item xs={6} md={6}>
               <InputMask
                 mask="(07)9 999 9999"
                 maskChar=" "
@@ -429,36 +478,28 @@ const AddUser = (props) => {
                     error={errorMobile}
                     helperText={errorMsg}
                     {...inputProps}
-                    variant="standard"
+                    variant="outlined"
                     fullWidth
                     margin="normal"
                     color="error"
+                    style={{ minHeight: "5rem" }}
                   />
                 )}
               </InputMask>
             </Grid>
-          </Grid>
-          <Typography
-            variant="h7"
-            align="center"
-            gutterBottom
-            sx={{ alignSelf: "flex-start" }}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
-                Date of Birth: <b>{dateOfBirth}</b>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                Age : <b>{age}</b>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                Gender : <b>{gender}</b>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                Service Prover: <b>{serviceProvider}</b>
-              </Grid>
+            <Grid item xs={6} md={6}>
+              <TextField
+                label="Service Provider"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+                fullWidth
+                value={serviceProvider}
+                disabled
+                sx={{ marginTop: "1rem" }}
+              />
             </Grid>
-          </Typography>
+          </Grid>
+
           <Button
             variant="contained"
             color="error"
@@ -466,11 +507,18 @@ const AddUser = (props) => {
             onClick={handleSignUp}
             sx={{
               backgroundColor: "#A50113",
-              borderRadius: "2rem",
-              marginTop: "16px",
+              borderRadius: "1rem",
+              marginTop: "3rem",
+              maxWidth: "45%",
             }}
           >
-            {useFor === "addUser" ? <div>Add User</div> :useFor === "update"? <div>Update</div>: <div>Sign Up</div>}
+            {useFor === "addUser" ? (
+              <div>Add User</div>
+            ) : useFor === "update" ? (
+              <div>Update</div>
+            ) : (
+              <div>Sign Up</div>
+            )}
           </Button>
         </div>
       </form>

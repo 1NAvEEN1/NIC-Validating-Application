@@ -7,23 +7,26 @@ const SignupForm = () => {
   return (
     <div>
       <Container
-        maxWidth="xs"
+        maxWidth="md"
         sx={{
           backgroundColor: "white",
           boxShadow: 4,
           borderRadius: "2rem",
-          padding: "2rem 2rem 2rem 2rem",
+          padding: 5
         }}
       >
         <Typography
           variant="h4"
-          align="center"
+          align="left"
           gutterBottom
           sx={{ color: "#C10206" }}
         >
-          Sign Up
+          Create Account
         </Typography>
-        <AddUser puka="hello" />
+        <Typography variant="body1" align="left" marginBottom={4} >
+          Unlock a World of Possibilities. <b>Join Us Today</b>
+        </Typography>
+        <AddUser />
         <Typography
           variant="body2"
           align="center"

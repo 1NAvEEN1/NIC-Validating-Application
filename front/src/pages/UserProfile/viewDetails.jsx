@@ -7,6 +7,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Box,
 } from "@mui/material";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -87,39 +88,69 @@ function ViewDetails(props) {
 
   return (
     <div>
-      <Grid container spacing={4}>
+      <Grid container spacing={2}>
         <Grid item xs={12} sm={4}>
-          <Typography color="error" variant="body1" sx={{ fontWeight: "bold" }}>
-            User Name
-          </Typography>
-          <Typography sx={{ fontWeight: "bold" }}>{userName}</Typography>
+          <Box sx={{ boxShadow: 2, borderRadius: "0.5rem", padding: "1rem" }}>
+            <Typography
+              color="error"
+              variant="body1"
+              sx={{ fontWeight: "bold" }}
+            >
+              User Name
+            </Typography>
+            <Typography sx={{ fontWeight: "bold" }}>{userName}</Typography>
+          </Box>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <Typography color="error" variant="body1" sx={{ fontWeight: "bold" }}>
-            Full Name
-          </Typography>
-          <Typography sx={{ fontWeight: "bold" }}>{name}</Typography>
+          <Box sx={{ boxShadow: 2, borderRadius: "0.5rem", padding: "1rem" }}>
+            <Typography
+              color="error"
+              variant="body1"
+              sx={{ fontWeight: "bold" }}
+            >
+              Full Name
+            </Typography>
+            <Typography sx={{ fontWeight: "bold" }}>{name}</Typography>
+          </Box>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <Typography color="error" variant="body1" sx={{ fontWeight: "bold" }}>
-            Address
-          </Typography>
-          <Typography sx={{ fontWeight: "bold" }}>{address}</Typography>
+          <Box sx={{ boxShadow: 2, borderRadius: "0.5rem", padding: "1rem" }}>
+            <Typography
+              color="error"
+              variant="body1"
+              sx={{ fontWeight: "bold" }}
+            >
+              Address
+            </Typography>
+            <Typography sx={{ fontWeight: "bold" }}>{address}</Typography>
+          </Box>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <Typography color="error" variant="body1" sx={{ fontWeight: "bold" }}>
-            NIC Number
-          </Typography>
-          <Typography sx={{ fontWeight: "bold" }}>{nic}</Typography>
+          <Box sx={{ boxShadow: 2, borderRadius: "0.5rem", padding: "1rem" }}>
+            <Typography
+              color="error"
+              variant="body1"
+              sx={{ fontWeight: "bold" }}
+            >
+              NIC Number
+            </Typography>
+            <Typography sx={{ fontWeight: "bold" }}>{nic}</Typography>
+          </Box>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <Typography color="error" variant="body1" sx={{ fontWeight: "bold" }}>
-            Mobile No.
-          </Typography>
-          <Typography sx={{ fontWeight: "bold" }}>{mobileNo}</Typography>
+          <Box sx={{ boxShadow: 2, borderRadius: "0.5rem", padding: "1rem" }}>
+            <Typography
+              color="error"
+              variant="body1"
+              sx={{ fontWeight: "bold" }}
+            >
+              Mobile No.
+            </Typography>
+            <Typography sx={{ fontWeight: "bold" }}>{mobileNo}</Typography>
+          </Box>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <div>
+          <Box sx={{ boxShadow: 2, borderRadius: "0.5rem", padding: "1rem" }}>
             <Typography
               color="error"
               variant="body1"
@@ -128,10 +159,10 @@ function ViewDetails(props) {
               Date of Birth
             </Typography>
             <Typography sx={{ fontWeight: "bold" }}>{dob}</Typography>
-          </div>
+          </Box>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <div>
+          <Box sx={{ boxShadow: 2, borderRadius: "0.5rem", padding: "1rem" }}>
             <Typography
               color="error"
               variant="body1"
@@ -140,11 +171,11 @@ function ViewDetails(props) {
               Gender
             </Typography>
             <Typography sx={{ fontWeight: "bold" }}>{gender}</Typography>
-          </div>
+          </Box>
         </Grid>
 
         <Grid item xs={12} sm={4}>
-          <div>
+          <Box sx={{ boxShadow: 2, borderRadius: "0.5rem", padding: "1rem" }}>
             <Typography
               color="error"
               variant="body1"
@@ -155,10 +186,10 @@ function ViewDetails(props) {
             <Typography sx={{ fontWeight: "bold" }}>
               {serviceProvider}
             </Typography>
-          </div>
+          </Box>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <div>
+          <Box sx={{ boxShadow: 2, borderRadius: "0.5rem", padding: "1rem" }}>
             <Typography
               color="error"
               variant="body1"
@@ -167,11 +198,35 @@ function ViewDetails(props) {
               Age
             </Typography>
             <Typography sx={{ fontWeight: "bold" }}>{age}</Typography>
-          </div>
+          </Box>
         </Grid>
       </Grid>
-      
-        {props.username ? (
+
+      {props.username ? (
+        <Grid item md={6}>
+          <Button
+            startIcon={<EditIcon />}
+            variant="contained"
+            color="error"
+            onClick={handleEditClick}
+            sx={{ mt: 3 }}
+          >
+            Edit Profile
+          </Button>
+        </Grid>
+      ) : (
+        <Grid container spacing={2} marginTop={5}>
+          <Grid item md={6}>
+            <Button
+              startIcon={<EditIcon />}
+              variant="contained"
+              color="error"
+              onClick={handleChangePW}
+              sx={{ mt: 3 }}
+            >
+              Change Password
+            </Button>
+          </Grid>
           <Grid item md={6}>
             <Button
               startIcon={<EditIcon />}
@@ -183,33 +238,9 @@ function ViewDetails(props) {
               Edit Profile
             </Button>
           </Grid>
-        ) : (
-          <Grid container spacing={2} marginTop={5}>
-            <Grid item md={6}>
-              <Button
-                startIcon={<EditIcon />}
-                variant="contained"
-                color="error"
-                onClick={handleChangePW}
-                sx={{ mt: 3 }}
-              >
-                Change Password
-              </Button>
-            </Grid>
-            <Grid item md={6}>
-              <Button
-                startIcon={<EditIcon />}
-                variant="contained"
-                color="error"
-                onClick={handleEditClick}
-                sx={{ mt: 3 }}
-              >
-                Edit Profile
-              </Button>
-            </Grid>
-            </Grid>
-        )}
-      
+        </Grid>
+      )}
+
       <Dialog
         open={openModal}
         onClose={handleCloseModal}
@@ -217,7 +248,7 @@ function ViewDetails(props) {
         maxWidth="sm"
       >
         <DialogTitle>
-          <h3>Add User</h3>
+          <h3>Edit Profile</h3>
         </DialogTitle>
         <DialogContent>
           <AddUser

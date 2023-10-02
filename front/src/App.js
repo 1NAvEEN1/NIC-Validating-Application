@@ -13,6 +13,7 @@ import NICValidation from "./pages/NICValidation";
 import Analytics from "./pages/Analytics";
 import User from "./pages/UserProfile";
 import Records from "./pages/Records";
+import ForgotPassword from "./pages/Login/forgotPassword";
 import { RequireAuth } from "react-auth-kit";
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
           </Route>
           <Route path="/login" element={<Login />} exact />
           <Route path="/signup" element={<Signup />} exact />
+          <Route path="/forgotPassword" element={<ForgotPassword />} exact />
         </Routes>
       </div>
     </Router>
