@@ -20,6 +20,9 @@ app.use("/NIC_Validations", NIC_Validations);
 const Analytics = require("./routes/Analytics");
 app.use("/Analytics", Analytics);
 
+const ForgotPW = require("./routes/ForgetPassword");
+app.use("/ForgotPW", ForgotPW);
+
 db.sequelize.sync().then(() => {
   app.listen(3001, () => {
     console.log("Server running");

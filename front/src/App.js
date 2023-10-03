@@ -13,7 +13,7 @@ import NICValidation from "./pages/NICValidation";
 import Analytics from "./pages/Analytics";
 import User from "./pages/UserProfile";
 import Records from "./pages/Records";
-import ForgotPassword from "./pages/Login/forgotPassword";
+import ForgotPassword from "./components/ForgotPassword";
 import { RequireAuth } from "react-auth-kit";
 
 function App() {
