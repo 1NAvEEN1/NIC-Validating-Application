@@ -8,7 +8,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Typography,
   Divider,
   IconButton,
   Snackbar,
@@ -24,6 +23,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddUser from "../../components/AddUser";
 import ViewUser from "../UserProfile/viewDetails";
 import DeleteUser from "./deleteUser";
+import Title from "../../components/Title";
 
 function Records() {
   const [listOfUsers, setListOfUsers] = useState([]);
@@ -154,7 +154,7 @@ function Records() {
     {
       field: "ServiceProvider",
       headerName: "ServiceProvider",
-      flex: 0.5,
+      flex: 0.6,
       headerClassName: "header",
       headerAlign: "center",
       align: "center",
@@ -162,7 +162,7 @@ function Records() {
     {
       field: "actions",
       headerName: "",
-      flex: 0.4,
+      flex: 0.1,
       headerClassName: "header",
       headerAlign: "center",
       align: "center",
@@ -194,9 +194,8 @@ function Records() {
           width: "100%",
         }}
       >
-        <Typography variant="h4" gutterBottom>
-          Records
-        </Typography>
+        <Title title="Records" />
+
         <Divider sx={{ my: 3 }} />
         <Grid container mb={4}>
           <Grid item md="6">

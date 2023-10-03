@@ -12,7 +12,7 @@ import {
   Button,
   Typography,
   Link,
-Grid,
+  Grid,
   Divider,
 } from "@mui/material";
 
@@ -54,7 +54,7 @@ function ForgotPassword(props) {
       })
       .catch((error) => {
         // Error; SMS not sent
-        setErrorMsg("Error: SMS not sent !")
+        setErrorMsg("Error: SMS not sent !");
         console.log(error);
       });
   };
@@ -76,11 +76,15 @@ function ForgotPassword(props) {
         })
         .catch((error) => {
           // User couldn't sign in (bad verification code?)
-          setErrorMsg("Invalid code!")
+          setErrorMsg("Invalid code!");
           console.log("OTP NOT verified");
         });
     }
   };
+
+  useEffect(() => {
+    requestOTP();
+  }, []);
 
   return (
     <div>
@@ -100,10 +104,6 @@ function ForgotPassword(props) {
               Please enter the one-time-password sent to your mobile number{" "}
               <b>{mobileNo}</b>
             </Typography>
-
-            <Button onClick={requestOTP} variant="contained" color="error">
-              Request OTP
-            </Button>
           </div>
           <TextField
             type="text"
@@ -121,9 +121,13 @@ function ForgotPassword(props) {
               min: 0,
             }}
           />
-           <Grid xs={12} style={{ minHeight: "3.5rem" }}>
-              {errorMsg && <Typography color="error">{errorMsg}</Typography>}
-            </Grid>
+          <Grid xs={12} style={{ minHeight: "3.5rem" }}>
+            {errorMsg && <Typography color="error">{errorMsg}</Typography>}
+          </Grid>
+          Didn't receive a code?
+          <Button onClick={requestOTP} color="error">
+            Resend
+          </Button>
           <div id="recaptcha-container"></div>
         </>
       )}

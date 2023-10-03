@@ -38,6 +38,7 @@ function ForgotPassword() {
       .catch((error) => {
         console.error("Error fetching mobile number:", error);
         // Handle error here, show an error message, etc.
+        setErrorMsg("Invalid username!")
       });
   };
 
@@ -103,7 +104,7 @@ function ForgotPassword() {
           href="../login"
           variant="body2"
           underline="hover"
-          color="textSecondary"
+          color="error"
           sx={{ marginTop: 2 }}
         >
           Back to Login

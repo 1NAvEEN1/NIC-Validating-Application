@@ -1,23 +1,11 @@
 import React from "react";
-import {
-  Container,
-  Typography,
-  Grid,
-  Box,
-  Divider,
-  Button,
-  IconButton,
-  TextField,
-} from "@mui/material";
+import { Container, Typography, Divider } from "@mui/material";
+import Title from "../../components/Title";
 
 // import UpdateDetails from "./updateDetails";
 import ViewDetails from "./viewDetails";
-import EditIcon from "@mui/icons-material/Edit";
-function UserProfile() {
-  const handleEditClick = () => {
-    
-  };
 
+function UserProfile() {
   return (
     <Container
       sx={{
@@ -27,14 +15,10 @@ function UserProfile() {
         width: "100%",
       }}
     >
-      <Typography variant="h4" gutterBottom>
-        User Profile
-      </Typography>
+      <Title title="User Profile" />
       <Divider sx={{ my: 3 }} />
 
-      {/* <UpdateDetails/> */}
-      <ViewDetails/>
-      
+      <ViewDetails />
     </Container>
   );
 }

@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Container, Typography, Grid, Button, Divider } from "@mui/material";
-import { PieChart } from "@mui/x-charts/PieChart";
-import { BarChart } from "@mui/x-charts/BarChart"; // Import BarChart
+import { Container, Grid, Button, Divider } from "@mui/material";
+import PieChartComponent from "./PieChartComponent"; // Import the PieChartComponent
+import BarGraphComponent from "./BarGraphComponent"; // Import the BarGraphComponent
+import TotalCountComponent from "./TotalCountComponent";
 import axios from "axios";
-import { useReactToPrint }from 'react-to-print'
+import { useReactToPrint } from "react-to-print";
+import Title from "../../components/Title";
 
 function Analytics() {
   const [genderCounts, setGenderCounts] = useState({
@@ -11,12 +13,9 @@ function Analytics() {
     femaleCount: 0,
   });
 
-  const [spCounts, setSPCounts] = useState({
-    Hutch: 0,
-    Dialog: 0,
-  });
+  const [spCounts, setSPCounts] = useState([0, 0, 0, 0]);
 
-  const [recordsCount, setRecordsCount] = useState()
+  const [recordsCount, setRecordsCount] = useState();
 
   useEffect(() => {
     // Fetch the total count of the user records
@@ -67,15 +66,12 @@ function Analytics() {
     },
   ];
 
-  const barData = Object.keys(spCounts).map((spName) => ({
-    id: spName,
-    value: spCounts[spName],
-  }));
+  const barData = Object.values(spCounts);
 
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
-    documentTitle: 'Analytics'
+    documentTitle: "Analytics",
   });
 
   return (
@@ -87,53 +83,54 @@ function Analytics() {
           padding: "2rem",
           width: "100%",
         }}
-      ><div ref={componentRef}>
-        <Typography variant="h4" gutterBottom>
-          Analytics
-        </Typography>
-        <Divider sx={{ my: 3 }} />
-        <Grid container>
-        <Grid item xs={12}>
-        <Typography variant="h5" mt={4} mb={-2}>
-          <div>Total number of User accounts</div> <b>{recordsCount}</b>
-        </Typography>
-
+      >
+        <div ref={componentRef}>
+          <Title title="Analytics" />
+          <Divider sx={{ my: 3 }} />
+          <Grid container>
+            <Grid item xs={12}>
+              <Container
+                sx={{
+                  boxShadow: 2,
+                  borderRadius: "1rem",
+                  padding: "1rem",
+                  width: "100%",
+                }}
+              >
+                <TotalCountComponent count={recordsCount} />{" "}
+                {/* Use the TotalCountComponent */}
+              </Container>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Container
+                sx={{
+                  boxShadow: 2,
+                  borderRadius: "1rem",
+                  width: "95%",
+                  mt: "2rem",
+                }}
+              >
+                <PieChartComponent data={pieData} />{" "}
+                {/* Use the PieChartComponent */}
+              </Container>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Container
+                sx={{
+                  boxShadow: 2,
+                  borderRadius: "1rem",
+                  width: "95%",
+                  mt: "2rem",
+                }}
+              >
+                <BarGraphComponent data={barData} />{" "}
+              </Container>
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={6}>
-            <PieChart
-              width={500}
-              height={400}
-              series={[
-                {
-                  data: pieData,
-                  innerRadius: 40,
-                  outerRadius: 100,
-                  paddingAngle: 0,
-                  cornerRadius: 3,
-                  startAngle: -90,
-                },
-              ]}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <BarChart
-              width={500}
-              height={400}
-              series={[
-                {
-                  data: barData,
-                  xAccessor: (entry) => entry.id,
-                  yAccessor: (entry) => entry.value,
-                },
-              ]}
-              xScale={{ type: "band" }}
-            />
-          </Grid>
-        </Grid>
         </div>
         <Button variant="contained" onClick={handlePrint} color="error">
-            Print
-          </Button>
+          Print
+        </Button>
       </Container>
     </div>
   );

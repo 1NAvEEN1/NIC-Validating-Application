@@ -88,7 +88,7 @@ function ChangePassword(props) {
             <Grid item xs={12} style={{ minHeight: "3.5rem" }}>
               {message && <Typography color="error">{message}</Typography>}
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ marginBottom: "1.5rem" }}>
               <Button
                 variant="contained"
                 color="error"
