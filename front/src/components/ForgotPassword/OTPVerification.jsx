@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { authentication } from "../../config/firebase-config";
 import {
   getAuth,
@@ -6,11 +6,25 @@ import {
   signInWithPhoneNumber,
 } from "firebase/auth";
 
-function ForgotPassword() {
+import {
+  Container,
+  TextField,
+  Button,
+  Typography,
+  Link,
+Grid,
+  Divider,
+} from "@mui/material";
+
+import ChangePassword from "./changePassword";
+
+function ForgotPassword(props) {
+  const mobileNo = props.mobileNo;
   const auth = getAuth();
-  const [mobileNo, setMobileNo] = useState("");
   const [otp, setOtp] = useState("");
-  const [confirmationResult, setConfirmationResult] = useState(null);
+  const [changePassword, setChangePassword] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  // const [confirmationResult, setConfirmationResult] = useState(null);
 
   const generateRecaptcha = () => {
     window.recaptchaVerifier = new RecaptchaVerifier(
@@ -30,29 +44,39 @@ function ForgotPassword() {
     generateRecaptcha();
     console.log("jkf");
     let appVerifier = window.recaptchaVerifier;
-    signInWithPhoneNumber(authentication, mobileNo, appVerifier)
+
+    // Update the way confirmationResult is assigned
+    signInWithPhoneNumber(auth, mobileNo, appVerifier)
       .then((confirmationResult) => {
+        window.confirmationResult = confirmationResult; // Assign confirmationResult here
         // SMS sent. Prompt user to type the code from the message, then store confirmationResult.
-        setConfirmationResult(confirmationResult);
+        console.log("OTP sent" + confirmationResult);
       })
       .catch((error) => {
         // Error; SMS not sent
+        setErrorMsg("Error: SMS not sent !")
         console.log(error);
       });
   };
 
-  const verifyOTP = () => {
-    if (otp.length === 6 && confirmationResult) {
+  const verifyOTP = (e) => {
+    let OTP = e.target.value;
+    setOtp(OTP);
+    if (OTP.length === 6) {
+      console.log("OTP NOT verified");
+      let confirmationResult = window.confirmationResult;
       confirmationResult
-        .confirm(otp)
+        .confirm(OTP)
         .then((result) => {
           // User signed in successfully.
           const user = result.user;
           console.log("OTP verified");
-          // Handle further actions like password reset or account recovery here
+
+          setChangePassword(true);
         })
         .catch((error) => {
           // User couldn't sign in (bad verification code?)
+          setErrorMsg("Invalid code!")
           console.log("OTP NOT verified");
         });
     }
@@ -60,26 +84,48 @@ function ForgotPassword() {
 
   return (
     <div>
-      <div>
-        <label>Mobile Number:</label>
-        <input
-          type="tel"
-          value={mobileNo}
-          onChange={(e) => setMobileNo(e.target.value)}
-        />
-        <button onClick={requestOTP}>Request OTP</button>
-      </div>
-      <div id="recaptcha-container"></div>
-      {confirmationResult && (
-        <div>
-          <label>Enter OTP:</label>
-          <input
+      {changePassword ? (
+        <ChangePassword username={props.username} />
+      ) : (
+        <>
+          <div>
+            <Typography variant="h5">OTP Verification</Typography>
+            <Divider sx={{ my: 3 }} />
+            <Typography
+              variant="body2"
+              align="center"
+              gutterBottom
+              sx={{ paddingTop: "-1rem" }}
+            >
+              Please enter the one-time-password sent to your mobile number{" "}
+              <b>{mobileNo}</b>
+            </Typography>
+
+            <Button onClick={requestOTP} variant="contained" color="error">
+              Request OTP
+            </Button>
+          </div>
+          <TextField
             type="text"
             value={otp}
-            onChange={(e) => setOtp(e.target.value)}
+            onChange={verifyOTP}
+            color="error"
+            sx={{ maxWidth: "10rem", mt: "2rem" }}
+            inputProps={{
+              maxlength: 6,
+              style: {
+                textAlign: "center",
+                fontSize: "1.5rem",
+                letterSpacing: 5,
+              },
+              min: 0,
+            }}
           />
-          <button onClick={verifyOTP}>Verify OTP</button>
-        </div>
+           <Grid xs={12} style={{ minHeight: "3.5rem" }}>
+              {errorMsg && <Typography color="error">{errorMsg}</Typography>}
+            </Grid>
+          <div id="recaptcha-container"></div>
+        </>
       )}
     </div>
   );

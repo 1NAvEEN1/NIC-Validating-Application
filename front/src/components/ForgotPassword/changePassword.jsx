@@ -8,21 +8,22 @@ import {
   Divider,
 } from "@mui/material";
 import axios from "axios";
-import Successful from "../../assets/successful.png";
+import Successful from "../../assets/successful.png"
 
-function UpdatePassword(props) {
+function ChangePassword(props) {
   let Username = props.username;
-  const [currentPassword, setCurrentPassword] = useState("");
+
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [message, setMessage] = useState("");
   const [successfullMsg, setSuccessfullMsg] = useState(false);
 
   const handleUpdatePassword = () => {
-    if (!currentPassword || !newPassword || !confirmNewPassword) {
-      setMessage("All fields are required.");
-      return;
-    }
+    
+    if ( !newPassword || !confirmNewPassword) {
+        setMessage("All fields are required.");
+        return;
+      }
     // Check if new password and confirm password match
     if (newPassword !== confirmNewPassword) {
       setMessage("New passwords do not match.");
@@ -31,9 +32,8 @@ function UpdatePassword(props) {
 
     // Send a request to your API to update the password
     axios
-      .post("http://localhost:3001/Users/updatePassword", {
+      .post("http://localhost:3001/ForgotPW/updatePassword", {
         UserName: Username,
-        CurrentPassword: currentPassword,
         NewPassword: newPassword,
       })
       .then((response) => {
@@ -50,31 +50,21 @@ function UpdatePassword(props) {
     <Container>
       {successfullMsg ? (
         <>
-          <Typography variant="h5" gutterBottom>
+        <Typography variant="h5" gutterBottom>
             Password Update Successful!
           </Typography>
           <img
-            src={Successful}
-            // style={{ width: "100%", height: "auto" }}
-          />
+        src={Successful}
+        // style={{ width: "100%", height: "auto" }}
+      />
         </>
       ) : (
         <>
-          <Typography variant="h4" gutterBottom>
-            Update Password
+          <Typography variant="h5">
+            Change Password
           </Typography>
           <Divider sx={{ my: 3 }} />
           <Grid container spacing={4} marginTop={"2rem"}>
-            <Grid item xs={12}>
-              <TextField
-                type="password"
-                label="Current Password"
-                variant="outlined"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                color="error"
-              />
-            </Grid>
             <Grid item xs={12}>
               <TextField
                 type="password"
@@ -95,7 +85,7 @@ function UpdatePassword(props) {
                 color="error"
               />
             </Grid>
-            <Grid item xs={12} style={{ minHeight: "4rem" }}>
+            <Grid item xs={12} style={{ minHeight: "3.5rem" }}>
               {message && <Typography color="error">{message}</Typography>}
             </Grid>
             <Grid item xs={12}>
@@ -115,4 +105,4 @@ function UpdatePassword(props) {
   );
 }
 
-export default UpdatePassword;
+export default ChangePassword;

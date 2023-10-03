@@ -136,7 +136,7 @@ const LoginForm = () => {
               align="left"
               style={{ marginBottom: "16px" }}
             >
-              <Link href="../forgotPassword" color="error">
+              <Link href="../forgotPassword" color="error" underline="hover">
                 <b>Forgot Password?</b>
               </Link>
               </Typography>
@@ -158,7 +158,7 @@ const LoginForm = () => {
               style={{ marginTop: 40 }}
             >
               Don't have an account?
-              <Link href="../signup" color="error">
+              <Link href="../signup" color="error" underline="hover">
                 <b> Create an Account</b>
               </Link>
             </Typography>
