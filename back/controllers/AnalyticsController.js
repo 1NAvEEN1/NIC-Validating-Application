@@ -67,3 +67,49 @@ exports.getTotalUserCount = async (req, res) => {
 };
 
 
+// Controller function to get ages and genders of users
+exports.getAgesAndGenders = async (req, res) => {
+  try {
+    const userAgesAndGenders = await Users.findAll({
+      attributes: ['Gender', 'DOB'], // Include the 'DateOfBirth' field
+    });
+
+    const ages = [];
+    const genders = [];
+
+    userAgesAndGenders.forEach((user) => {
+      const gender = user.Gender;
+      const dateOfBirth = user.DOB;
+
+      // Calculate age based on 'DateOfBirth'
+      const birthDate = new Date(dateOfBirth);
+      const today = new Date();
+      const age = today.getFullYear() - birthDate.getFullYear();
+
+      // Push age and gender into their respective arrays
+      ages.push(age);
+      genders.push(gender);
+    });
+
+    res.json({ ages, genders });
+  } catch (error) {
+    console.error('Error fetching ages and genders:', error);
+    res.status(500).json({ error: 'Failed to fetch ages and genders' });
+  }
+};
+
+exports.getActiveUserCount = async (req, res) => {
+  try {
+    // Use Sequelize's count() method to count users where Status is 'Active'
+    const activeUserCount = await Users.count({
+      where: {
+        Status: true,
+      },
+    });
+
+    res.json({ activeUserCount });
+  } catch (error) {
+    console.error('Error fetching active user count:', error);
+    res.status(500).json({ error: 'Failed to fetch active user count' });
+  }
+};

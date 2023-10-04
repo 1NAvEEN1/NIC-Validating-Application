@@ -16,6 +16,7 @@ function Analytics() {
   const [spCounts, setSPCounts] = useState([0, 0, 0, 0]);
 
   const [recordsCount, setRecordsCount] = useState();
+  const [activeCount, setActiveCount] = useState();
 
   useEffect(() => {
     // Fetch the total count of the user records
@@ -24,6 +25,16 @@ function Analytics() {
       .then((response) => {
         const data = response.data.totalCount;
         setRecordsCount(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching gender counts:", error);
+      });
+
+      axios
+      .get("http://localhost:3001/Analytics/totalUserCount")
+      .then((response) => {
+        const data = response.data.totalCount;
+        setActiveCount(data);
       })
       .catch((error) => {
         console.error("Error fetching gender counts:", error);
@@ -87,7 +98,7 @@ function Analytics() {
         <div ref={componentRef}>
           <Title title="Analytics" />
           <Divider sx={{ my: 3 }} />
-          <Grid container>
+          <Grid container marginBottom={"2rem"}>
             <Grid item xs={12}>
               <Container
                 sx={{
@@ -97,7 +108,7 @@ function Analytics() {
                   width: "100%",
                 }}
               >
-                <TotalCountComponent count={recordsCount} />{" "}
+                <TotalCountComponent count={recordsCount} activeCount={activeCount} />{" "}
                 {/* Use the TotalCountComponent */}
               </Container>
             </Grid>
@@ -128,7 +139,7 @@ function Analytics() {
             </Grid>
           </Grid>
         </div>
-        <Button variant="contained" onClick={handlePrint} color="error">
+        <Button variant="contained" onClick={handlePrint} color="error" >
           Print
         </Button>
       </Container>
