@@ -38,7 +38,7 @@ function ForgotPassword() {
       .catch((error) => {
         console.error("Error fetching mobile number:", error);
         // Handle error here, show an error message, etc.
-        setErrorMsg("Invalid username!")
+        setErrorMsg("Invalid username!");
       });
   };
 
@@ -65,10 +65,15 @@ function ForgotPassword() {
           <OTPVerification mobileNo={mobileNo} username={username} />
         ) : (
           <>
-            <Typography variant="h5">Forgot Password?</Typography>
+            <Typography
+              variant="h4"
+              sx={{ color: "#C10206" }}
+            >
+              Forgot Password?
+            </Typography>
             <Divider sx={{ my: 3 }} />
             <Typography
-              variant="body2"
+              variant="body"
               align="center"
               gutterBottom
               sx={{ paddingTop: "-1rem" }}
@@ -107,7 +112,7 @@ function ForgotPassword() {
           color="error"
           sx={{ marginTop: 2 }}
         >
-          Back to Login
+          <b>Back to Login</b>
         </Link>
       </Container>
     </div>

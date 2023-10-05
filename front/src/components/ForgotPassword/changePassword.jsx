@@ -8,7 +8,7 @@ import {
   Divider,
 } from "@mui/material";
 import axios from "axios";
-import Successful from "../../assets/successful.png"
+import Successful from "../../assets/successful.png";
 
 function ChangePassword(props) {
   let Username = props.username;
@@ -19,11 +19,10 @@ function ChangePassword(props) {
   const [successfullMsg, setSuccessfullMsg] = useState(false);
 
   const handleUpdatePassword = () => {
-    
-    if ( !newPassword || !confirmNewPassword) {
-        setMessage("All fields are required.");
-        return;
-      }
+    if (!newPassword || !confirmNewPassword) {
+      setMessage("All fields are required.");
+      return;
+    }
     // Check if new password and confirm password match
     if (newPassword !== confirmNewPassword) {
       setMessage("New passwords do not match.");
@@ -38,7 +37,7 @@ function ChangePassword(props) {
       })
       .then((response) => {
         setMessage("Password updated successfully.");
-        setSuccessfullMsg(true)
+        setSuccessfullMsg(true);
       })
       .catch((error) => {
         setMessage("Failed to update password. Please try again.");
@@ -50,17 +49,17 @@ function ChangePassword(props) {
     <Container>
       {successfullMsg ? (
         <>
-        <Typography variant="h5" gutterBottom>
+          <Typography variant="h4" gutterBottom>
             Password Update Successful!
           </Typography>
           <img
-        src={Successful}
-        // style={{ width: "100%", height: "auto" }}
-      />
+            src={Successful}
+            // style={{ width: "100%", height: "auto" }}
+          />
         </>
       ) : (
         <>
-          <Typography variant="h5">
+          <Typography variant="h4" sx={{ color: "#C10206" }}>
             Change Password
           </Typography>
           <Divider sx={{ my: 3 }} />

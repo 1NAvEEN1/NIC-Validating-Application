@@ -2,6 +2,7 @@ import React from "react";
 import { Grid, Typography } from "@mui/material";
 
 function TotalCountComponent({ count, activeCount }) {
+  console.log(activeCount);
   return (
     <Typography variant="h5">
       <Grid container>

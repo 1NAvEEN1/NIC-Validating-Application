@@ -13,7 +13,11 @@ function Analytics() {
     femaleCount: 0,
   });
 
-  const [spCounts, setSPCounts] = useState([0, 0, 0, 0]);
+  const [spCounts, setSPCounts] = useState({
+    total: [0, 0, 0, 0],
+    Male: [0, 0, 0, 0],
+    Female: [0, 0, 0, 0],
+  });
 
   const [recordsCount, setRecordsCount] = useState();
   const [activeCount, setActiveCount] = useState();
@@ -31,9 +35,9 @@ function Analytics() {
       });
 
       axios
-      .get("http://localhost:3001/Analytics/totalUserCount")
+      .get("http://localhost:3001/Analytics/ActiveUserCount")
       .then((response) => {
-        const data = response.data.totalCount;
+        const data = response.data.activeUserCount;
         setActiveCount(data);
       })
       .catch((error) => {
@@ -76,8 +80,6 @@ function Analytics() {
       color: "#82E0AA",
     },
   ];
-
-  const barData = Object.values(spCounts);
 
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
@@ -134,7 +136,7 @@ function Analytics() {
                   mt: "2rem",
                 }}
               >
-                <BarGraphComponent data={barData} />{" "}
+                <BarGraphComponent data={spCounts} />{" "}
               </Container>
             </Grid>
           </Grid>

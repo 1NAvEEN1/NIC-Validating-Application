@@ -48,12 +48,12 @@ const Header = () => {
 
           <Grid item xs={3} md={3} justifyContent="flex-end" spacing={1}>
             <div style={{ display: "flex" }}>
-              <Container sx={{ paddingTop: 0 }}>
+              <Container sx={{ paddingTop: 1 }}>
                 <Typography variant="h5">{userID}</Typography>
               </Container>
-              <AccountCircleIcon fontSize="large" color="error" />
+              <AccountCircleIcon fontSize="large" color="error" sx={{width: "3rem", height: "3rem"}} />
               <IconButton color="error" onClick={logout} variant="outlined">
-                <ExitToAppIcon color="error" />
+                <ExitToAppIcon color="error" fontSize="large" />
               </IconButton>
             </div>
           </Grid>

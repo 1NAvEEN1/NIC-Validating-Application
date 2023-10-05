@@ -93,7 +93,9 @@ function ForgotPassword(props) {
       ) : (
         <>
           <div>
-            <Typography variant="h5">OTP Verification</Typography>
+            <Typography variant="h4" sx={{ color: "#C10206" }}>
+              OTP Verification
+            </Typography>
             <Divider sx={{ my: 3 }} />
             <Typography
               variant="body2"

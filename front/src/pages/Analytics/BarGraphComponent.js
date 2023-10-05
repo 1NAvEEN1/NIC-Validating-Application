@@ -3,7 +3,11 @@ import { BarChart } from "@mui/x-charts/BarChart";
 import { Typography } from "@mui/material";
 
 function BarGraphComponent(props) {
-  let values = props.data;
+  const { total, Male, Female } = props.data; // Destructure the data prop
+  console.log(total);
+  const Total = Object.values(total);
+  const male = Object.values(Male);
+  const female = Object.values(Female);
   return (
     <>
       <Typography variant="h6" pt={"2rem"} mb={"-3rem"}>
@@ -16,7 +20,11 @@ function BarGraphComponent(props) {
         xAxis={[
           { scaleType: "band", data: ["Mobitel", "Hutch", "Dialog", "Airtel"] },
         ]}
-        series={[{ data: values }]}
+        series={[
+          { data: Total, label: "Total" },
+          { data: male, label: "Male" },
+          { data: female, label: "Female" },
+        ]}
       />
     </>
   );

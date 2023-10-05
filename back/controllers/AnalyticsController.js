@@ -1,13 +1,13 @@
-const { Users, Sequelize } = require('../models'); // Import Sequelize along with Users model
+const { Users, Sequelize } = require("../models"); // Import Sequelize along with Users model
 
 exports.getGenderCounts = async (req, res) => {
   try {
     const genderCounts = await Users.findAll({
       attributes: [
-        'Gender',
-        [Sequelize.fn('COUNT', Sequelize.col('Gender')), 'count'],
+        "Gender",
+        [Sequelize.fn("COUNT", Sequelize.col("Gender")), "count"],
       ],
-      group: ['Gender'],
+      group: ["Gender"],
     });
 
     let maleCount = 0;
@@ -17,17 +17,17 @@ exports.getGenderCounts = async (req, res) => {
       const gender = entry.dataValues.Gender;
       const count = entry.dataValues.count;
 
-      if (gender === 'Male') {
+      if (gender === "Male") {
         maleCount = count;
-      } else if (gender === 'Female') {
+      } else if (gender === "Female") {
         femaleCount = count;
       }
     });
 
     res.json({ maleCount, femaleCount });
   } catch (error) {
-    console.error('Error fetching gender counts:', error);
-    res.status(500).json({ error: 'Failed to fetch gender counts' });
+    console.error("Error fetching gender counts:", error);
+    res.status(500).json({ error: "Failed to fetch gender counts" });
   }
 };
 
@@ -37,22 +37,43 @@ exports.getServiceProviderCounts = async (req, res) => {
     // Use Sequelize's aggregation functions to count users for each service provider
     const serviceProviderCounts = await Users.findAll({
       attributes: [
-        'ServiceProvider',
-        [Sequelize.fn('COUNT', Sequelize.col('ServiceProvider')), 'count'],
+        "ServiceProvider",
+        "Gender", // Include the 'Gender' attribute
+        [Sequelize.fn("COUNT", Sequelize.col("ServiceProvider")), "count"],
       ],
-      group: ['ServiceProvider'],
+      group: ["ServiceProvider", "Gender"], // Group by both ServiceProvider and Gender
     });
 
-    // Transform the result to a more structured format
-    const countsByServiceProvider = {};
+    // Initialize an object to store the counts by gender and service provider
+    const countsByGender = {
+      total: {},
+      Male: {},
+      Female: {},
+    };
+
+    // Initialize all service providers with a count of 0
+    const serviceProviders = ["Mobitel", "Hutch", "Dialog", "Airtel"];
+    serviceProviders.forEach((provider) => {
+      countsByGender.total[provider] = 0;
+      countsByGender.Male[provider] = 0;
+      countsByGender.Female[provider] = 0;
+    });
+
+    // Transform the result to match the desired structure
     serviceProviderCounts.forEach((entry) => {
-      countsByServiceProvider[entry.ServiceProvider] = entry.get('count');
+      const serviceProvider = entry.ServiceProvider;
+      const gender = entry.Gender;
+      const count = entry.get("count");
+
+      // Add the count to the corresponding category
+      countsByGender.total[serviceProvider] += count;
+      countsByGender[gender][serviceProvider] = count;
     });
 
-    res.json(countsByServiceProvider);
+    res.json(countsByGender);
   } catch (error) {
-    console.error('Error fetching service provider counts:', error);
-    res.status(500).json({ error: 'Failed to fetch service provider counts' });
+    console.error("Error fetching service provider counts:", error);
+    res.status(500).json({ error: "Failed to fetch service provider counts" });
   }
 };
 
@@ -67,15 +88,30 @@ exports.getTotalUserCount = async (req, res) => {
 };
 
 
-// Controller function to get ages and genders of users
 exports.getAgesAndGenders = async (req, res) => {
   try {
-    const userAgesAndGenders = await Users.findAll({
-      attributes: ['Gender', 'DOB'], // Include the 'DateOfBirth' field
-    });
+    // Define age ranges
+    const ageRanges = [
+      { min: 16, max: 25 },
+      { min: 26, max: 35 },
+      { min: 36, max: 45 },
+      { min: 46, max: 55 },
+      { min: 56, max: 65 },
+      { min: 66, max: 75 },
+      { min: 76, max: 85 },
+      { min: 86, max: 95 },
+      { min: 96, max: 100 },
+    ];
 
-    const ages = [];
-    const genders = [];
+    const genderAges = {};
+
+    // Initialize the genderAges object with empty arrays for males and females
+    genderAges.Male = Array(ageRanges.length).fill(0);
+    genderAges.Female = Array(ageRanges.length).fill(0);
+
+    const userAgesAndGenders = await Users.findAll({
+      attributes: ["Gender", "DOB"], // Include the 'DateOfBirth' field
+    });
 
     userAgesAndGenders.forEach((user) => {
       const gender = user.Gender;
@@ -86,17 +122,24 @@ exports.getAgesAndGenders = async (req, res) => {
       const today = new Date();
       const age = today.getFullYear() - birthDate.getFullYear();
 
-      // Push age and gender into their respective arrays
-      ages.push(age);
-      genders.push(gender);
+      // Determine the age range for the calculated age
+      for (let i = 0; i < ageRanges.length; i++) {
+        const { min, max } = ageRanges[i];
+        if (age >= min && age <= max) {
+          // Increment the count for the corresponding age range and gender
+          genderAges[gender][i]++;
+          break; // Exit the loop once the age range is found
+        }
+      }
     });
 
-    res.json({ ages, genders });
+    res.json(genderAges);
   } catch (error) {
-    console.error('Error fetching ages and genders:', error);
-    res.status(500).json({ error: 'Failed to fetch ages and genders' });
+    console.error("Error fetching ages and genders:", error);
+    res.status(500).json({ error: "Failed to fetch ages and genders" });
   }
 };
+
 
 exports.getActiveUserCount = async (req, res) => {
   try {
@@ -109,7 +152,7 @@ exports.getActiveUserCount = async (req, res) => {
 
     res.json({ activeUserCount });
   } catch (error) {
-    console.error('Error fetching active user count:', error);
-    res.status(500).json({ error: 'Failed to fetch active user count' });
+    console.error("Error fetching active user count:", error);
+    res.status(500).json({ error: "Failed to fetch active user count" });
   }
 };
