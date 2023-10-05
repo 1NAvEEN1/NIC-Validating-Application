@@ -13,11 +13,8 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import {
-  DataGrid,
-  GridToolbarContainer,
-  GridToolbarExport,
-} from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { useDemoData } from '@mui/x-data-grid-generator';
 import axios from "axios";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddUser from "../../components/AddUser";
@@ -176,13 +173,19 @@ function Records() {
     },
   ];
 
-  function CustomToolbar() {
-    return (
-      <GridToolbarContainer>
-        <GridToolbarExport />
-      </GridToolbarContainer>
-    );
-  }
+  // function CustomToolbar() {
+  //   return (
+  //     <GridToolbarContainer>
+  //       <GridToolbarExport />
+  //     </GridToolbarContainer>
+  //   );
+  // }
+
+  const {loading } = useDemoData({
+    rowLength: 4,
+    maxColumns: 6,
+  });
+
   return (
     <div>
       <Container
@@ -224,9 +227,14 @@ function Records() {
             columns={columns}
             pageSize={5}
             rowsPerPageOptions={[5, 10, 20]}
-            slots={{
-              toolbar: CustomToolbar,
+            loading={loading}
+            slots={{ toolbar: GridToolbar}}
+            m
+            initialState={{
+              
+              pagination: { paginationModel: { pageSize: 10 } },
             }}
+            pageSizeOptions={[10, 25, 50]}
             sx={{
               boxShadow: 2,
               "& .MuiDataGrid-cell:hover": {
@@ -238,6 +246,7 @@ function Records() {
               },
               display: "flex",
               fontSize: 14,
+              minHeight: 670
             }}
             onRowClick={handleRowClick}
             getRowId={(row) => row.id} // Specify the custom id for each row

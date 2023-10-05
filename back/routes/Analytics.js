@@ -7,4 +7,7 @@ router.get("/SPCounts", AnalyticsController.getServiceProviderCounts);
 router.get("/totalUserCount", AnalyticsController.getTotalUserCount);
 router.get("/agesAndGenders", AnalyticsController.getAgesAndGenders);
 router.get("/ActiveUserCount", AnalyticsController.getActiveUserCount);
+router.get("/homeTowns", AnalyticsController.getHometownCounts);
+
 module.exports = router;
+

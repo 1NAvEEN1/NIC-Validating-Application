@@ -156,3 +156,41 @@ exports.getActiveUserCount = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch active user count" });
   }
 };
+
+exports.getHometownCounts = async (req, res) => {
+  try {
+    const users = await Users.findAll({ attributes: ['Address'] });
+
+    // Create a map to store hometown counts
+    const hometownCounts = new Map();
+
+    users.forEach((user) => {
+      const address = user.Address;
+
+      // Split the address by ', ' or ','
+      const addressParts = address.split(/, |,/);
+
+      // Get the last part of the address as hometown and trim any leading or trailing spaces
+      const hometown = addressParts[addressParts.length - 1].trim();
+
+      // If the hometown is already in the map, increment the count; otherwise, initialize it to 1
+      if (hometownCounts.has(hometown)) {
+        hometownCounts.set(hometown, hometownCounts.get(hometown) + 1);
+      } else {
+        hometownCounts.set(hometown, 1);
+      }
+    });
+
+    // Convert the map to a plain object
+    const hometownCountsObject = {};
+    hometownCounts.forEach((count, hometown) => {
+      hometownCountsObject[hometown] = count;
+    });
+
+    res.json(hometownCountsObject);
+  } catch (error) {
+    console.error('Error fetching hometown counts:', error);
+    res.status(500).json({ error: 'Failed to fetch hometown counts' });
+  }
+};
+

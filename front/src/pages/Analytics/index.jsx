@@ -3,11 +3,14 @@ import { Container, Grid, Button, Divider } from "@mui/material";
 import PieChartComponent from "./PieChartComponent"; // Import the PieChartComponent
 import BarGraphComponent from "./BarGraphComponent"; // Import the BarGraphComponent
 import TotalCountComponent from "./TotalCountComponent";
+import GenderAgeLineGraph from "./GenderAgeLineGraph"
+import HomeTowns from "./HomeTowns"
 import axios from "axios";
 import { useReactToPrint } from "react-to-print";
 import Title from "../../components/Title";
 
 function Analytics() {
+
   const [genderCounts, setGenderCounts] = useState({
     maleCount: 0,
     femaleCount: 0,
@@ -17,6 +20,11 @@ function Analytics() {
     total: [0, 0, 0, 0],
     Male: [0, 0, 0, 0],
     Female: [0, 0, 0, 0],
+  });
+
+  const [ageGender, setAgeGender] = useState({
+    Male: [0, 0, 0, 0,0, 0, 0, 0, 0],
+    Female: [0, 0, 0, 0,0, 0, 0, 0, 0],
   });
 
   const [recordsCount, setRecordsCount] = useState();
@@ -31,7 +39,7 @@ function Analytics() {
         setRecordsCount(data);
       })
       .catch((error) => {
-        console.error("Error fetching gender counts:", error);
+        console.error("Error fetching counts:", error);
       });
 
       axios
@@ -41,7 +49,7 @@ function Analytics() {
         setActiveCount(data);
       })
       .catch((error) => {
-        console.error("Error fetching gender counts:", error);
+        console.error("Error fetching counts:", error);
       });
     // Fetch gender counts from the specified URL
     axios
@@ -63,6 +71,16 @@ function Analytics() {
       })
       .catch((error) => {
         console.error("Error fetching service provider counts:", error);
+      });
+
+      axios
+      .get("http://localhost:3001/Analytics/agesAndGenders")
+      .then((response) => {
+        const data = response.data;
+        setAgeGender(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching Age and gender counts:", error);
       });
   }, []);
 
@@ -137,6 +155,30 @@ function Analytics() {
                 }}
               >
                 <BarGraphComponent data={spCounts} />{" "}
+              </Container>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Container
+                sx={{
+                  boxShadow: 2,
+                  borderRadius: "1rem",
+                  width: "95%",
+                  mt: "2rem",
+                }}
+              >
+                <GenderAgeLineGraph data={ageGender} />{" "}
+              </Container>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Container
+                sx={{
+                  boxShadow: 2,
+                  borderRadius: "1rem",
+                  width: "95%",
+                  mt: "2rem",
+                }}
+              >
+                <HomeTowns />{" "}
               </Container>
             </Grid>
           </Grid>
